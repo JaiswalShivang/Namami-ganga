@@ -304,14 +304,201 @@ function initMap() {
 
   // Pollution hotspots data
   const hotspots = [
-    { lat: 25.3176, lng: 83.0130, level: 'high', name: 'Varanasi Industrial Area', description: 'Heavy industrial discharge and sewage' },
-    { lat: 25.4358, lng: 81.8463, level: 'high', name: 'Allahabad Sangam', description: 'Urban waste and religious activities' },
-    { lat: 27.1767, lng: 78.0081, level: 'medium', name: 'Agra Stretch', description: 'Industrial and domestic waste' },
-    { lat: 22.5726, lng: 88.3639, level: 'high', name: 'Kolkata Port Area', description: 'Industrial discharge and shipping waste' },
-    { lat: 25.5941, lng: 85.1376, level: 'medium', name: 'Patna City', description: 'Urban sewage and domestic waste' },
-    { lat: 29.9457, lng: 78.1642, level: 'low', name: 'Haridwar', description: 'Religious activities and tourism' },
-    { lat: 30.0869, lng: 78.2676, level: 'low', name: 'Rishikesh', description: 'Tourism impact and sewage' },
-    { lat: 26.4499, lng: 80.3319, level: 'high', name: 'Kanpur Industrial Belt', description: 'Leather tanneries and chemical industries' }
+    {
+      lat: 25.3176,
+      lng: 83.0130,
+      level: 'critical',
+      name: 'Varanasi Industrial Area',
+      description: 'Heavy industrial discharge and sewage',
+      details: {
+        do: '4.2 mg/L (Poor)',
+        bod: '5.2 mg/L (Critical)',
+        coliform: '24,000 MPN/100ml (Very High)',
+        ph: '7.8 (Slightly Alkaline)',
+        heavyMetals: 'Lead, Chromium detected',
+        pollutionSources: 'Textile industries, cremation ghats, urban sewage'
+      }
+    },
+    {
+      lat: 25.4358,
+      lng: 81.8463,
+      level: 'critical',
+      name: 'Prayagraj (Allahabad) Sangam',
+      description: 'Urban waste and religious activities',
+      details: {
+        do: '4.5 mg/L (Poor)',
+        bod: '5.0 mg/L (Critical)',
+        coliform: '21,000 MPN/100ml (Very High)',
+        ph: '7.6 (Slightly Alkaline)',
+        heavyMetals: 'Lead detected',
+        pollutionSources: 'Religious activities, urban sewage, agricultural runoff'
+      }
+    },
+    {
+      lat: 27.1767,
+      lng: 78.0081,
+      level: 'poor',
+      name: 'Agra Stretch',
+      description: 'Industrial and domestic waste',
+      details: {
+        do: '5.8 mg/L (Moderate)',
+        bod: '3.2 mg/L (Poor)',
+        coliform: '9,000 MPN/100ml (High)',
+        ph: '7.4 (Neutral)',
+        heavyMetals: 'Trace amounts',
+        pollutionSources: 'Leather industries, urban waste, tourism impact'
+      }
+    },
+    {
+      lat: 22.5726,
+      lng: 88.3639,
+      level: 'poor',
+      name: 'Kolkata Port Area',
+      description: 'Industrial discharge and shipping waste',
+      details: {
+        do: '4.8 mg/L (Poor)',
+        bod: '4.8 mg/L (Poor)',
+        coliform: '16,000 MPN/100ml (High)',
+        ph: '7.5 (Slightly Alkaline)',
+        heavyMetals: 'Lead, Mercury detected',
+        pollutionSources: 'Port activities, industrial discharge, urban sewage'
+      }
+    },
+    {
+      lat: 25.5941,
+      lng: 85.1376,
+      level: 'critical',
+      name: 'Patna City',
+      description: 'Urban sewage and domestic waste',
+      details: {
+        do: '4.0 mg/L (Poor)',
+        bod: '5.5 mg/L (Critical)',
+        coliform: '28,000 MPN/100ml (Very High)',
+        ph: '7.7 (Slightly Alkaline)',
+        heavyMetals: 'Lead detected',
+        pollutionSources: 'Urban sewage, lack of treatment facilities, industrial discharge'
+      }
+    },
+    {
+      lat: 29.9457,
+      lng: 78.1642,
+      level: 'excellent',
+      name: 'Haridwar',
+      description: 'Religious activities and tourism',
+      details: {
+        do: '7.5 mg/L (Excellent)',
+        bod: '1.5 mg/L (Good)',
+        coliform: '500 MPN/100ml (Low)',
+        ph: '7.2 (Neutral)',
+        heavyMetals: 'Not detected',
+        pollutionSources: 'Religious activities, tourism, minor urban waste'
+      }
+    },
+    {
+      lat: 30.0869,
+      lng: 78.2676,
+      level: 'excellent',
+      name: 'Rishikesh',
+      description: 'Tourism impact and sewage',
+      details: {
+        do: '7.8 mg/L (Excellent)',
+        bod: '1.2 mg/L (Good)',
+        coliform: '300 MPN/100ml (Low)',
+        ph: '7.1 (Neutral)',
+        heavyMetals: 'Not detected',
+        pollutionSources: 'Tourism activities, adventure sports, minor urban waste'
+      }
+    },
+    {
+      lat: 26.4499,
+      lng: 80.3319,
+      level: 'critical',
+      name: 'Kanpur Industrial Belt',
+      description: 'Leather tanneries and chemical industries',
+      details: {
+        do: '4.8 mg/L (Poor)',
+        bod: '4.5 mg/L (Critical)',
+        coliform: '32,000 MPN/100ml (Very High)',
+        ph: '8.1 (Alkaline)',
+        heavyMetals: 'Chromium, Lead, Cadmium detected',
+        pollutionSources: 'Leather tanneries, textile industries, chemical factories, urban sewage'
+      }
+    },
+    {
+      lat: 30.9910,
+      lng: 78.9200,
+      level: 'pristine',
+      name: 'Gangotri Glacier',
+      description: 'Sacred source of the Ganga',
+      details: {
+        do: '8.5 mg/L (Pristine)',
+        bod: '0.8 mg/L (Excellent)',
+        coliform: '<100 MPN/100ml (Minimal)',
+        ph: '7.0 (Neutral)',
+        heavyMetals: 'Not detected',
+        pollutionSources: 'Minimal human impact, some tourism'
+      }
+    },
+    {
+      lat: 24.7914,
+      lng: 87.9336,
+      level: 'moderate',
+      name: 'Farakka Barrage',
+      description: 'Major water diversion point',
+      details: {
+        do: '5.0 mg/L (Moderate)',
+        bod: '4.5 mg/L (Poor)',
+        coliform: '8,000 MPN/100ml (Moderate)',
+        ph: '7.4 (Neutral)',
+        heavyMetals: 'Trace amounts',
+        pollutionSources: 'Agricultural runoff, industrial discharge upstream'
+      }
+    },
+    {
+      lat: 21.7679,
+      lng: 88.1108,
+      level: 'moderate',
+      name: 'Ganga Sagar (Mouth)',
+      description: 'Where Ganga meets Bay of Bengal',
+      details: {
+        do: '5.5 mg/L (Moderate)',
+        bod: '4.0 mg/L (Poor)',
+        coliform: '6,000 MPN/100ml (Moderate)',
+        ph: '7.8 (Slightly Alkaline)',
+        heavyMetals: 'Diluted concentrations',
+        pollutionSources: 'Accumulated pollution, tidal mixing, pilgrimage activities'
+      }
+    },
+    {
+      lat: 28.4200,
+      lng: 77.9800,
+      level: 'moderate',
+      name: 'Bulandshahr',
+      description: 'Agricultural runoff and industrial waste',
+      details: {
+        do: '6.5 mg/L (Good)',
+        bod: '2.3 mg/L (Moderate)',
+        coliform: '3,500 MPN/100ml (Moderate)',
+        ph: '7.3 (Neutral)',
+        heavyMetals: 'Not detected',
+        pollutionSources: 'Agricultural runoff, small industries, urban waste'
+      }
+    },
+    {
+      lat: 25.2500,
+      lng: 86.9800,
+      level: 'poor',
+      name: 'Bhagalpur',
+      description: 'Silk industry and urban waste',
+      details: {
+        do: '4.5 mg/L (Poor)',
+        bod: '5.0 mg/L (Critical)',
+        coliform: '12,000 MPN/100ml (High)',
+        ph: '7.6 (Slightly Alkaline)',
+        heavyMetals: 'Lead detected',
+        pollutionSources: 'Silk industry effluents, urban sewage, agricultural runoff'
+      }
+    }
   ];
 
   // Create the map centered on the Ganges river
@@ -385,28 +572,79 @@ function initMap() {
 
   // Draw the Ganges river path (simplified)
   const gangaCoordinates = [
-    { lat: 30.9910, lng: 78.9200 }, // Gangotri (source)
-    { lat: 30.0869, lng: 78.2676 }, // Rishikesh
-    { lat: 29.9457, lng: 78.1642 }, // Haridwar
-    { lat: 29.4727, lng: 77.7085 }, // Bijnor
-    { lat: 28.8955, lng: 78.0883 }, // Garhmukteshwar
-    { lat: 27.1767, lng: 78.0081 }, // Agra
-    { lat: 26.4499, lng: 80.3319 }, // Kanpur
-    { lat: 25.4358, lng: 81.8463 }, // Allahabad
-    { lat: 25.3176, lng: 83.0130 }, // Varanasi
-    { lat: 25.5941, lng: 85.1376 }, // Patna
-    { lat: 24.7914, lng: 87.9336 }, // Farakka
-    { lat: 22.5726, lng: 88.3639 }, // Kolkata
-    { lat: 21.7679, lng: 88.1108 }  // Ganga Sagar (mouth)
+    { lat: 30.9910, lng: 78.9200, level: 'pristine', name: 'Gangotri (Source)', do: 8.5, bod: 0.8 }, // Gangotri (source)
+    { lat: 30.7500, lng: 78.6000, level: 'pristine', name: 'Bhagirathi River', do: 8.3, bod: 0.9 }, // Bhagirathi
+    { lat: 30.4000, lng: 78.4300, level: 'pristine', name: 'Tehri', do: 8.1, bod: 1.0 }, // Tehri
+    { lat: 30.1400, lng: 78.3200, level: 'pristine', name: 'Devprayag', do: 8.0, bod: 1.1 }, // Devprayag
+    { lat: 30.0869, lng: 78.2676, level: 'excellent', name: 'Rishikesh', do: 7.8, bod: 1.2 }, // Rishikesh
+    { lat: 29.9457, lng: 78.1642, level: 'excellent', name: 'Haridwar', do: 7.5, bod: 1.5 }, // Haridwar
+    { lat: 29.4727, lng: 77.7085, level: 'good', name: 'Bijnor', do: 7.2, bod: 1.8 }, // Bijnor
+    { lat: 28.8955, lng: 78.0883, level: 'good', name: 'Garhmukteshwar', do: 6.9, bod: 2.0 }, // Garhmukteshwar
+    { lat: 28.4200, lng: 77.9800, level: 'moderate', name: 'Bulandshahr', do: 6.5, bod: 2.3 }, // Bulandshahr
+    { lat: 27.9300, lng: 78.0500, level: 'moderate', name: 'Narora', do: 6.2, bod: 2.5 }, // Narora
+    { lat: 27.5900, lng: 78.0400, level: 'moderate', name: 'Aligarh Region', do: 6.0, bod: 2.8 }, // Aligarh Region
+    { lat: 27.1767, lng: 78.0081, level: 'poor', name: 'Agra', do: 5.8, bod: 3.2 }, // Agra
+    { lat: 26.8800, lng: 78.7500, level: 'poor', name: 'Etawah', do: 5.5, bod: 3.5 }, // Etawah
+    { lat: 26.4499, lng: 80.3319, level: 'critical', name: 'Kanpur', do: 4.8, bod: 4.5 }, // Kanpur
+    { lat: 25.9400, lng: 80.8300, level: 'poor', name: 'Fatehpur', do: 5.2, bod: 4.0 }, // Fatehpur
+    { lat: 25.4358, lng: 81.8463, level: 'critical', name: 'Prayagraj (Allahabad)', do: 4.5, bod: 5.0 }, // Prayagraj (Allahabad)
+    { lat: 25.3176, lng: 83.0130, level: 'critical', name: 'Varanasi', do: 4.2, bod: 5.2 }, // Varanasi
+    { lat: 25.4000, lng: 83.6700, level: 'poor', name: 'Ghazipur', do: 4.8, bod: 4.8 }, // Ghazipur
+    { lat: 25.5941, lng: 85.1376, level: 'critical', name: 'Patna', do: 4.0, bod: 5.5 }, // Patna
+    { lat: 25.2500, lng: 86.9800, level: 'poor', name: 'Bhagalpur', do: 4.5, bod: 5.0 }, // Bhagalpur
+    { lat: 24.7914, lng: 87.9336, level: 'moderate', name: 'Farakka', do: 5.0, bod: 4.5 }, // Farakka
+    { lat: 24.1300, lng: 88.2400, level: 'moderate', name: 'Jangipur', do: 5.2, bod: 4.2 }, // Jangipur
+    { lat: 23.4700, lng: 88.3400, level: 'moderate', name: 'Kalyani', do: 5.4, bod: 4.0 }, // Kalyani
+    { lat: 22.5726, lng: 88.3639, level: 'poor', name: 'Kolkata', do: 4.8, bod: 4.8 }, // Kolkata
+    { lat: 22.1200, lng: 88.1000, level: 'moderate', name: 'Diamond Harbour', do: 5.2, bod: 4.5 }, // Diamond Harbour
+    { lat: 21.7679, lng: 88.1108, level: 'moderate', name: 'Ganga Sagar (Mouth)', do: 5.5, bod: 4.0 }  // Ganga Sagar (mouth)
   ];
 
-  // Create river path with enhanced animation
+  // Create multiple river path segments with different colors based on pollution levels
+  const gangaPaths = [];
+  const pollutionColors = {
+    'pristine': '#1DE9B6',    // Teal - Pristine water
+    'excellent': '#00E676',   // Green - Excellent water quality
+    'good': '#76FF03',        // Light Green - Good water quality
+    'moderate': '#FFEB3B',    // Yellow - Moderate pollution
+    'poor': '#FF9800',        // Orange - Poor water quality
+    'critical': '#F44336'     // Red - Critical pollution
+  };
+
+  // Create path segments with appropriate colors
+  for (let i = 0; i < gangaCoordinates.length - 1; i++) {
+    const segmentCoordinates = [gangaCoordinates[i], gangaCoordinates[i + 1]];
+    const level = gangaCoordinates[i].level;
+
+    const segmentPath = new google.maps.Polyline({
+      path: segmentCoordinates,
+      geodesic: true,
+      strokeColor: pollutionColors[level] || '#2196f3',
+      strokeOpacity: 0.9,
+      strokeWeight: 6,
+      icons: [{
+        icon: {
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+          scale: 3.5,
+          fillColor: '#ffffff',
+          fillOpacity: 1,
+          strokeWeight: 1,
+          strokeColor: '#0d47a1'
+        },
+        repeat: '150px'
+      }]
+    });
+
+    gangaPaths.push(segmentPath);
+  }
+
+  // Create a single path for animation purposes
   const gangaPath = new google.maps.Polyline({
     path: gangaCoordinates,
     geodesic: true,
-    strokeColor: '#2196f3',
-    strokeOpacity: 0.9,
-    strokeWeight: 5,
+    strokeColor: 'transparent',
+    strokeOpacity: 0,
+    strokeWeight: 0,
     icons: [{
       icon: {
         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
@@ -439,8 +677,60 @@ function initMap() {
   riverTooltip.innerHTML = '<strong>Ganga River</strong>: Water quality varies along the course';
   document.body.appendChild(riverTooltip);
 
-  // Add the river path to the map
+  // Add all river path segments to the map
+  gangaPaths.forEach(path => {
+    path.setMap(map);
+  });
+
+  // Add the transparent path for animation
   gangaPath.setMap(map);
+
+  // Create a legend for pollution levels
+  const legend = document.createElement('div');
+  legend.className = 'map-legend';
+  legend.style.backgroundColor = 'white';
+  legend.style.padding = '10px';
+  legend.style.margin = '10px';
+  legend.style.borderRadius = '8px';
+  legend.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+  legend.style.fontSize = '12px';
+  legend.style.fontFamily = "'Poppins', sans-serif";
+  legend.style.lineHeight = '1.5';
+  legend.style.maxWidth = '220px';
+
+  legend.innerHTML = `
+    <h3 style="margin-top: 0; font-size: 14px; margin-bottom: 8px; color: #333; text-align: center;">Ganga Water Quality</h3>
+    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.pristine}; margin-right: 8px;"></div>
+      <span>Pristine (DO: >8.0 mg/L)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.excellent}; margin-right: 8px;"></div>
+      <span>Excellent (DO: 7.0-8.0 mg/L)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.good}; margin-right: 8px;"></div>
+      <span>Good (DO: 6.0-7.0 mg/L)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.moderate}; margin-right: 8px;"></div>
+      <span>Moderate (DO: 5.0-6.0 mg/L)</span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.poor}; margin-right: 8px;"></div>
+      <span>Poor (DO: 4.0-5.0 mg/L)</span>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.critical}; margin-right: 8px;"></div>
+      <span>Critical (DO: <4.0 mg/L)</span>
+    </div>
+    <div style="font-size: 10px; margin-top: 8px; color: #666; text-align: center;">
+      DO = Dissolved Oxygen, BOD = Biochemical Oxygen Demand
+    </div>
+  `;
+
+  // Add the legend to the map
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
   // Add mousemove listener to the map to show river tooltip
   map.addListener('mousemove', (event) => {
@@ -461,14 +751,29 @@ function initMap() {
       if (distance < 0.05) { // Threshold in degrees, adjust as needed
         isNearPath = true;
 
-        // Determine which segment of the river this is
-        if (i < 3) {
-          nearestSegment = 'Upper Ganga: Excellent water quality (DO: 7.0-8.0 mg/L)';
-        } else if (i < 7) {
-          nearestSegment = 'Middle Ganga: Moderate pollution (DO: 5.0-6.0 mg/L)';
-        } else {
-          nearestSegment = 'Lower Ganga: Higher pollution levels (DO: 4.0-5.0 mg/L)';
-        }
+        // Get detailed information about this river segment
+        const segmentInfo = gangaCoordinates[i];
+        const levelText = {
+          'pristine': 'Pristine',
+          'excellent': 'Excellent',
+          'good': 'Good',
+          'moderate': 'Moderate',
+          'poor': 'Poor',
+          'critical': 'Critical'
+        };
+
+        // Create detailed tooltip content
+        nearestSegment = `
+          <div style="text-align: left; padding: 5px;">
+            <strong>${segmentInfo.name}</strong>
+            <div style="margin-top: 5px; font-size: 13px;">
+              <div><span style="color: ${pollutionColors[segmentInfo.level]}; font-weight: bold;">${levelText[segmentInfo.level]}</span> water quality</div>
+              <div style="margin-top: 3px;">Dissolved Oxygen: <strong>${segmentInfo.do} mg/L</strong></div>
+              <div>BOD: <strong>${segmentInfo.bod} mg/L</strong></div>
+              <div style="font-size: 11px; margin-top: 5px; color: #eee;">Hover over markers for more details</div>
+            </div>
+          </div>
+        `;
 
         break;
       }
@@ -477,9 +782,10 @@ function initMap() {
     // Update tooltip
     if (isNearPath) {
       riverTooltip.style.display = 'block';
-      riverTooltip.innerHTML = `<strong>Ganga River</strong>: ${nearestSegment}`;
+      riverTooltip.innerHTML = nearestSegment;
       riverTooltip.style.left = event.pixel.x + 'px';
-      riverTooltip.style.top = event.pixel.y + 'px';
+      riverTooltip.style.top = (event.pixel.y - 10) + 'px';
+      riverTooltip.style.minWidth = '200px';
     } else {
       riverTooltip.style.display = 'none';
     }
@@ -884,7 +1190,29 @@ function initMap() {
         const infoContent = document.createElement('div');
         infoContent.classList.add('info-window');
 
-        let pollutionDetails = '';
+        // Create detailed pollution information based on the hotspot data
+        let pollutionDetails = `
+          <div class="pollution-details-container">
+            <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+              ${spot.name}
+            </h4>
+            <p>${spot.description}</p>
+
+            <div class="water-quality-metrics">
+              <h5 style="margin: 12px 0 8px 0;">Water Quality Measurements:</h5>
+              <ul class="pollution-details" style="padding-left: 20px; margin: 0;">
+                <li>Dissolved Oxygen: <strong>${spot.details.do}</strong></li>
+                <li>BOD levels: <strong>${spot.details.bod}</strong></li>
+                <li>Coliform count: <strong>${spot.details.coliform}</strong></li>
+                <li>pH level: <strong>${spot.details.ph}</strong></li>
+                <li>Heavy metals: <strong>${spot.details.heavyMetals}</strong></li>
+              </ul>
+
+              <h5 style="margin: 12px 0 8px 0;">Pollution Sources:</h5>
+              <p style="margin: 0;">${spot.details.pollutionSources}</p>
+            </div>
+          </div>
+        `;
         if (spot.level === 'high') {
           pollutionDetails = `
             <p>Water quality is severely compromised with:</p>
