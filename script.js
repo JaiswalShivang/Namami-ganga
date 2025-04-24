@@ -504,26 +504,110 @@ function initMap() {
   // Create the map centered on the Ganges river
   const gangaCenter = { lat: 25.3176, lng: 83.0130 }; // Varanasi as center point
 
-  // Custom map style for better river visibility and aesthetics
+  // Custom map style for a beautiful, immersive experience
   const mapStyles = [
-    { elementType: 'geometry', stylers: [{ color: '#f8f8f8' }] },
-    { elementType: 'labels.text.fill', stylers: [{ color: '#4a4a4a' }] },
-    { elementType: 'labels.text.stroke', stylers: [{ color: '#ffffff' }] },
-    { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#d4d4d4' }] },
-    { featureType: 'administrative.land_parcel', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
-    { featureType: 'administrative.province', elementType: 'geometry.stroke', stylers: [{ color: '#c8c8c8' }] },
-    { featureType: 'water', elementType: 'geometry.fill', stylers: [{ color: '#1976d2' }] },
-    { featureType: 'water', elementType: 'geometry.stroke', stylers: [{ color: '#1565c0' }] },
-    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#ffffff' }] },
-    { featureType: 'road', elementType: 'geometry', stylers: [{ visibility: 'simplified' }, { color: '#e0e0e0' }] },
-    { featureType: 'road.arterial', elementType: 'geometry', stylers: [{ color: '#d9d9d9' }] },
-    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#c8c8c8' }] },
-    { featureType: 'landscape.natural', elementType: 'geometry.fill', stylers: [{ color: '#e8f5e9' }] },
-    { featureType: 'landscape.man_made', elementType: 'geometry.fill', stylers: [{ color: '#f0f0f0' }] },
-    { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#e0f2f1' }] },
-    { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#c8e6c9' }] },
-    { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
-    { featureType: 'transit', stylers: [{ visibility: 'off' }] }
+    {
+      "featureType": "water",
+      "elementType": "geometry.fill",
+      "stylers": [
+        { "color": "#0288d1" }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#ffffff" }
+      ]
+    },
+    {
+      "featureType": "landscape",
+      "elementType": "geometry.fill",
+      "stylers": [
+        { "color": "#f5f5f5" }
+      ]
+    },
+    {
+      "featureType": "landscape.natural",
+      "elementType": "geometry.fill",
+      "stylers": [
+        { "color": "#e8f5e9" }
+      ]
+    },
+    {
+      "featureType": "landscape.man_made",
+      "elementType": "geometry.fill",
+      "stylers": [
+        { "color": "#eeeeee" }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "geometry.fill",
+      "stylers": [
+        { "color": "#c8e6c9" }
+      ]
+    },
+    {
+      "featureType": "poi.attraction",
+      "stylers": [
+        { "visibility": "on" }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#e0e0e0" },
+        { "lightness": 5 }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#dadada" }
+      ]
+    },
+    {
+      "featureType": "administrative.locality",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#3f51b5" }
+      ]
+    },
+    {
+      "featureType": "administrative.province",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#3f51b5" }
+      ]
+    },
+    {
+      "featureType": "administrative.country",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        { "color": "#3f51b5" }
+      ]
+    },
+    {
+      "featureType": "transit",
+      "stylers": [
+        { "visibility": "off" }
+      ]
+    },
+    {
+      "featureType": "poi.business",
+      "stylers": [
+        { "visibility": "off" }
+      ]
+    },
+    {
+      "featureType": "poi.government",
+      "stylers": [
+        { "visibility": "off" }
+      ]
+    }
   ];
 
   // Map options
@@ -600,8 +684,7 @@ function initMap() {
     { lat: 21.7679, lng: 88.1108, level: 'moderate', name: 'Ganga Sagar (Mouth)', do: 5.5, bod: 4.0 }  // Ganga Sagar (mouth)
   ];
 
-  // Create multiple river path segments with different colors based on pollution levels
-  const gangaPaths = [];
+  // Define pollution level colors with a beautiful gradient
   const pollutionColors = {
     'pristine': '#1DE9B6',    // Teal - Pristine water
     'excellent': '#00E676',   // Green - Excellent water quality
@@ -611,70 +694,92 @@ function initMap() {
     'critical': '#F44336'     // Red - Critical pollution
   };
 
-  // Create path segments with appropriate colors
+  // Create a gradient river path with segments of different colors
+  const gangaPaths = [];
+
+  // Create beautiful path segments with appropriate colors and glow effect
   for (let i = 0; i < gangaCoordinates.length - 1; i++) {
     const segmentCoordinates = [gangaCoordinates[i], gangaCoordinates[i + 1]];
     const level = gangaCoordinates[i].level;
 
+    // Create glow effect with a wider, semi-transparent path underneath
+    const glowPath = new google.maps.Polyline({
+      path: segmentCoordinates,
+      geodesic: true,
+      strokeColor: pollutionColors[level] || '#2196f3',
+      strokeOpacity: 0.3,
+      strokeWeight: 12,
+      zIndex: 1
+    });
+
+    // Create main river path
     const segmentPath = new google.maps.Polyline({
       path: segmentCoordinates,
       geodesic: true,
       strokeColor: pollutionColors[level] || '#2196f3',
       strokeOpacity: 0.9,
-      strokeWeight: 6,
-      icons: [{
-        icon: {
-          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-          scale: 3.5,
-          fillColor: '#ffffff',
-          fillOpacity: 1,
-          strokeWeight: 1,
-          strokeColor: '#0d47a1'
-        },
-        repeat: '150px'
-      }]
+      strokeWeight: 5,
+      zIndex: 2
     });
 
+    gangaPaths.push(glowPath);
     gangaPaths.push(segmentPath);
   }
 
-  // Create a single path for animation purposes
+  // Create a single path for flow animation
   const gangaPath = new google.maps.Polyline({
     path: gangaCoordinates,
     geodesic: true,
     strokeColor: 'transparent',
     strokeOpacity: 0,
     strokeWeight: 0,
+    zIndex: 3,
     icons: [{
       icon: {
-        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-        scale: 3.5,
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 3,
         fillColor: '#ffffff',
-        fillOpacity: 1,
-        strokeWeight: 1,
-        strokeColor: '#0d47a1'
+        fillOpacity: 0.8,
+        strokeWeight: 0
       },
-      repeat: '80px'
+      repeat: '90px'
     }]
   });
 
-  // Create tooltip for river path
+  // Create beautiful tooltip for river path
   const riverTooltip = document.createElement('div');
   riverTooltip.className = 'map-tooltip river-tooltip';
   riverTooltip.style.display = 'none';
   riverTooltip.style.position = 'absolute';
   riverTooltip.style.zIndex = '1000';
-  riverTooltip.style.backgroundColor = 'rgba(33, 150, 243, 0.9)';
-  riverTooltip.style.color = 'white';
-  riverTooltip.style.padding = '8px 12px';
-  riverTooltip.style.borderRadius = '6px';
+  riverTooltip.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+  riverTooltip.style.color = '#333';
+  riverTooltip.style.padding = '12px 15px';
+  riverTooltip.style.borderRadius = '10px';
   riverTooltip.style.fontSize = '14px';
   riverTooltip.style.pointerEvents = 'none';
-  riverTooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-  riverTooltip.style.maxWidth = '250px';
-  riverTooltip.style.textAlign = 'center';
+  riverTooltip.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15)';
+  riverTooltip.style.maxWidth = '280px';
+  riverTooltip.style.textAlign = 'left';
   riverTooltip.style.transform = 'translate(-50%, -130%)';
-  riverTooltip.innerHTML = '<strong>Ganga River</strong>: Water quality varies along the course';
+  riverTooltip.style.border = '1px solid rgba(0,0,0,0.05)';
+  riverTooltip.style.fontFamily = "'Poppins', sans-serif";
+  riverTooltip.style.transition = 'opacity 0.2s ease';
+
+  // Initial content - will be updated dynamically
+  riverTooltip.innerHTML = `
+    <div style="border-left: 4px solid #2196f3; padding-left: 10px;">
+      <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; color: #2196f3;">
+        Ganga River
+      </div>
+      <div style="margin-bottom: 5px;">
+        Water quality varies along the course
+      </div>
+      <div style="font-size: 12px; color: #666; font-style: italic;">
+        Move cursor along river for details
+      </div>
+    </div>
+  `;
   document.body.appendChild(riverTooltip);
 
   // Add all river path segments to the map
@@ -685,52 +790,141 @@ function initMap() {
   // Add the transparent path for animation
   gangaPath.setMap(map);
 
-  // Create a legend for pollution levels
+  // Create a beautiful, interactive legend for pollution levels
   const legend = document.createElement('div');
   legend.className = 'map-legend';
-  legend.style.backgroundColor = 'white';
-  legend.style.padding = '10px';
+  legend.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+  legend.style.padding = '15px';
   legend.style.margin = '10px';
-  legend.style.borderRadius = '8px';
-  legend.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
-  legend.style.fontSize = '12px';
+  legend.style.borderRadius = '12px';
+  legend.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+  legend.style.fontSize = '13px';
   legend.style.fontFamily = "'Poppins', sans-serif";
   legend.style.lineHeight = '1.5';
-  legend.style.maxWidth = '220px';
+  legend.style.maxWidth = '250px';
+  legend.style.transition = 'all 0.3s ease';
+  legend.style.border = '1px solid rgba(0,0,0,0.05)';
 
+  // Create legend content with interactive elements
   legend.innerHTML = `
-    <h3 style="margin-top: 0; font-size: 14px; margin-bottom: 8px; color: #333; text-align: center;">Ganga Water Quality</h3>
-    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.pristine}; margin-right: 8px;"></div>
-      <span>Pristine (DO: >8.0 mg/L)</span>
+    <div style="display: flex; align-items: center; margin-bottom: 12px; justify-content: space-between;">
+      <h3 style="margin: 0; font-size: 16px; color: #333; font-weight: 600;">Ganga Water Quality</h3>
+      <div class="legend-toggle" style="cursor: pointer; font-size: 18px;">−</div>
     </div>
-    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.excellent}; margin-right: 8px;"></div>
-      <span>Excellent (DO: 7.0-8.0 mg/L)</span>
-    </div>
-    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.good}; margin-right: 8px;"></div>
-      <span>Good (DO: 6.0-7.0 mg/L)</span>
-    </div>
-    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.moderate}; margin-right: 8px;"></div>
-      <span>Moderate (DO: 5.0-6.0 mg/L)</span>
-    </div>
-    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.poor}; margin-right: 8px;"></div>
-      <span>Poor (DO: 4.0-5.0 mg/L)</span>
-    </div>
-    <div style="display: flex; align-items: center;">
-      <div style="width: 20px; height: 4px; background-color: ${pollutionColors.critical}; margin-right: 8px;"></div>
-      <span>Critical (DO: <4.0 mg/L)</span>
-    </div>
-    <div style="font-size: 10px; margin-top: 8px; color: #666; text-align: center;">
-      DO = Dissolved Oxygen, BOD = Biochemical Oxygen Demand
+
+    <div class="legend-content">
+      <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
+           data-level="pristine">
+        <div style="width: 30px; height: 6px; background-color: ${pollutionColors.pristine}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.pristine}"></div>
+        <span>Pristine (DO: >8.0 mg/L)</span>
+      </div>
+
+      <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
+           data-level="excellent">
+        <div style="width: 30px; height: 6px; background-color: ${pollutionColors.excellent}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.excellent}"></div>
+        <span>Excellent (DO: 7.0-8.0 mg/L)</span>
+      </div>
+
+      <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
+           data-level="good">
+        <div style="width: 30px; height: 6px; background-color: ${pollutionColors.good}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.good}"></div>
+        <span>Good (DO: 6.0-7.0 mg/L)</span>
+      </div>
+
+      <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
+           data-level="moderate">
+        <div style="width: 30px; height: 6px; background-color: ${pollutionColors.moderate}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.moderate}"></div>
+        <span>Moderate (DO: 5.0-6.0 mg/L)</span>
+      </div>
+
+      <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
+           data-level="poor">
+        <div style="width: 30px; height: 6px; background-color: ${pollutionColors.poor}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.poor}"></div>
+        <span>Poor (DO: 4.0-5.0 mg/L)</span>
+      </div>
+
+      <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
+           data-level="critical">
+        <div style="width: 30px; height: 6px; background-color: ${pollutionColors.critical}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.critical}"></div>
+        <span>Critical (DO: <4.0 mg/L)</span>
+      </div>
+
+      <div style="font-size: 11px; margin-top: 10px; color: #666; text-align: center; border-top: 1px solid #eee; padding-top: 8px;">
+        DO = Dissolved Oxygen, BOD = Biochemical Oxygen Demand
+      </div>
     </div>
   `;
 
   // Add the legend to the map
   map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+
+  // Add interactivity to the legend
+  const legendToggle = legend.querySelector('.legend-toggle');
+  const legendContent = legend.querySelector('.legend-content');
+
+  legendToggle.addEventListener('click', () => {
+    if (legendContent.style.display === 'none') {
+      legendContent.style.display = 'block';
+      legendToggle.textContent = '−';
+    } else {
+      legendContent.style.display = 'none';
+      legendToggle.textContent = '+';
+    }
+  });
+
+  // Add hover effects to legend items
+  const legendItems = legend.querySelectorAll('.legend-item');
+  legendItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      item.style.backgroundColor = 'rgba(0,0,0,0.05)';
+    });
+
+    item.addEventListener('mouseleave', () => {
+      item.style.backgroundColor = 'transparent';
+    });
+
+    // Highlight river segments when clicking on legend items
+    item.addEventListener('click', () => {
+      const level = item.getAttribute('data-level');
+
+      // Reset all path opacities first
+      gangaPaths.forEach(path => {
+        path.setOptions({ strokeOpacity: path.strokeWeight === 12 ? 0.3 : 0.9 });
+      });
+
+      // Highlight paths of the selected level
+      gangaPaths.forEach((path, index) => {
+        if (index % 2 === 1) { // Main paths only
+          const pathIndex = Math.floor(index / 2);
+          if (pathIndex < gangaCoordinates.length - 1) {
+            const pathLevel = gangaCoordinates[pathIndex].level;
+
+            if (pathLevel === level) {
+              // Highlight this path
+              path.setOptions({ strokeOpacity: 1, strokeWeight: 6 });
+              // Also highlight its glow
+              gangaPaths[index-1].setOptions({ strokeOpacity: 0.6, strokeWeight: 14 });
+            } else {
+              // Dim other paths
+              path.setOptions({ strokeOpacity: 0.4 });
+              gangaPaths[index-1].setOptions({ strokeOpacity: 0.1 });
+            }
+          }
+        }
+      });
+
+      // Reset after 3 seconds
+      setTimeout(() => {
+        gangaPaths.forEach((path, index) => {
+          if (index % 2 === 0) { // Glow paths
+            path.setOptions({ strokeOpacity: 0.3, strokeWeight: 12 });
+          } else { // Main paths
+            path.setOptions({ strokeOpacity: 0.9, strokeWeight: 5 });
+          }
+        });
+      }, 3000);
+    });
+  });
 
   // Add mousemove listener to the map to show river tooltip
   map.addListener('mousemove', (event) => {
@@ -821,17 +1015,29 @@ function initMap() {
     return Math.sqrt(Math.pow(p1.x - proj.x, 2) + Math.pow(p1.y - proj.y, 2));
   }
 
-  // Animate the river flow
+  // Create a more beautiful and smooth river flow animation
   let count = 0;
   const animateRiver = () => {
     if (gangaPath && gangaPath.get) {
       try {
-        count = (count + 1) % 200;
+        // Slower, smoother animation
+        count = (count + 0.5) % 200;
         const icons = gangaPath.get('icons');
         if (icons && icons.length > 0) {
-          icons[0].offset = (count / 2) + '%';
+          icons[0].offset = count + '%';
           gangaPath.set('icons', icons);
         }
+
+        // Add a pulsing effect to the river
+        const pulseAmount = Math.sin(count / 30) * 0.1 + 0.9;
+        gangaPaths.forEach((path, index) => {
+          // Only apply pulsing to the main paths (even indices), not the glow paths
+          if (index % 2 === 1) {
+            path.setOptions({
+              strokeOpacity: 0.8 * pulseAmount
+            });
+          }
+        });
       } catch (error) {
         console.log('Animation error:', error);
       }
@@ -857,23 +1063,40 @@ function initMap() {
         glyphColor: '#ffffff'
       });
 
-      // Create tooltip for source marker
+      // Create beautiful tooltip for source marker
       const sourceTooltip = document.createElement('div');
       sourceTooltip.className = 'map-tooltip source-tooltip';
       sourceTooltip.style.display = 'none';
       sourceTooltip.style.position = 'absolute';
       sourceTooltip.style.zIndex = '1000';
-      sourceTooltip.style.backgroundColor = 'rgba(13, 71, 161, 0.9)';
-      sourceTooltip.style.color = 'white';
-      sourceTooltip.style.padding = '8px 12px';
-      sourceTooltip.style.borderRadius = '6px';
+      sourceTooltip.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+      sourceTooltip.style.color = '#333';
+      sourceTooltip.style.padding = '12px 15px';
+      sourceTooltip.style.borderRadius = '10px';
       sourceTooltip.style.fontSize = '14px';
       sourceTooltip.style.pointerEvents = 'none';
-      sourceTooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-      sourceTooltip.style.maxWidth = '250px';
-      sourceTooltip.style.textAlign = 'center';
+      sourceTooltip.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15)';
+      sourceTooltip.style.maxWidth = '280px';
+      sourceTooltip.style.textAlign = 'left';
       sourceTooltip.style.transform = 'translate(-50%, -130%)';
-      sourceTooltip.innerHTML = '<strong>Gangotri (Source)</strong>: Pristine water quality with high oxygen levels (7.8 mg/L)';
+      sourceTooltip.style.border = '1px solid rgba(0,0,0,0.05)';
+      sourceTooltip.style.fontFamily = "'Poppins', sans-serif";
+
+      // Create tooltip content with visual indicators
+      sourceTooltip.innerHTML = `
+        <div style="border-left: 4px solid ${pollutionColors.pristine}; padding-left: 10px;">
+          <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; color: ${pollutionColors.pristine};">
+            Gangotri (Source)
+          </div>
+          <div style="margin-bottom: 8px;">
+            The sacred source of the Ganga river in the Himalayas
+          </div>
+          <div style="display: flex; align-items: center; font-size: 13px; color: #666;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${pollutionColors.pristine}; margin-right: 6px;"></div>
+            <div>DO: <strong>8.5 mg/L</strong> • Pristine water quality</div>
+          </div>
+        </div>
+      `;
       document.body.appendChild(sourceTooltip);
 
       sourceMarker = new google.maps.marker.AdvancedMarkerElement({
@@ -905,23 +1128,40 @@ function initMap() {
         glyphColor: '#ffffff'
       });
 
-      // Create tooltip for mouth marker
+      // Create beautiful tooltip for mouth marker
       const mouthTooltip = document.createElement('div');
       mouthTooltip.className = 'map-tooltip mouth-tooltip';
       mouthTooltip.style.display = 'none';
       mouthTooltip.style.position = 'absolute';
       mouthTooltip.style.zIndex = '1000';
-      mouthTooltip.style.backgroundColor = 'rgba(13, 71, 161, 0.9)';
-      mouthTooltip.style.color = 'white';
-      mouthTooltip.style.padding = '8px 12px';
-      mouthTooltip.style.borderRadius = '6px';
+      mouthTooltip.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+      mouthTooltip.style.color = '#333';
+      mouthTooltip.style.padding = '12px 15px';
+      mouthTooltip.style.borderRadius = '10px';
       mouthTooltip.style.fontSize = '14px';
       mouthTooltip.style.pointerEvents = 'none';
-      mouthTooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-      mouthTooltip.style.maxWidth = '250px';
-      mouthTooltip.style.textAlign = 'center';
+      mouthTooltip.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15)';
+      mouthTooltip.style.maxWidth = '280px';
+      mouthTooltip.style.textAlign = 'left';
       mouthTooltip.style.transform = 'translate(-50%, -130%)';
-      mouthTooltip.innerHTML = '<strong>Ganga Sagar (Mouth)</strong>: Moderate water quality with oxygen levels of 5.1 mg/L';
+      mouthTooltip.style.border = '1px solid rgba(0,0,0,0.05)';
+      mouthTooltip.style.fontFamily = "'Poppins', sans-serif";
+
+      // Create tooltip content with visual indicators
+      mouthTooltip.innerHTML = `
+        <div style="border-left: 4px solid ${pollutionColors.moderate}; padding-left: 10px;">
+          <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; color: ${pollutionColors.moderate};">
+            Ganga Sagar (Mouth)
+          </div>
+          <div style="margin-bottom: 8px;">
+            Where the Ganga meets the Bay of Bengal
+          </div>
+          <div style="display: flex; align-items: center; font-size: 13px; color: #666;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${pollutionColors.moderate}; margin-right: 6px;"></div>
+            <div>DO: <strong>5.5 mg/L</strong> • Moderate water quality</div>
+          </div>
+        </div>
+      `;
       document.body.appendChild(mouthTooltip);
 
       mouthMarker = new google.maps.marker.AdvancedMarkerElement({
@@ -1125,32 +1365,44 @@ function initMap() {
           pinBackground.style.animation = 'pulse 2s infinite';
         }
 
-        // Create a tooltip element for hover
+        // Create beautiful tooltip for hover
         const tooltip = document.createElement('div');
         tooltip.className = 'map-tooltip';
         tooltip.style.display = 'none';
         tooltip.style.position = 'absolute';
         tooltip.style.zIndex = '1000';
-        tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        tooltip.style.color = 'white';
-        tooltip.style.padding = '8px 12px';
-        tooltip.style.borderRadius = '6px';
+        tooltip.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+        tooltip.style.color = '#333';
+        tooltip.style.padding = '12px 15px';
+        tooltip.style.borderRadius = '10px';
         tooltip.style.fontSize = '14px';
         tooltip.style.pointerEvents = 'none';
-        tooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-        tooltip.style.maxWidth = '250px';
-        tooltip.style.textAlign = 'center';
+        tooltip.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.15)';
+        tooltip.style.maxWidth = '280px';
+        tooltip.style.textAlign = 'left';
         tooltip.style.transform = 'translate(-50%, -130%)';
+        tooltip.style.border = '1px solid rgba(0,0,0,0.05)';
+        tooltip.style.fontFamily = "'Poppins', sans-serif";
 
-        // Set tooltip content based on pollution level
-        let tooltipContent = '';
-        if (spot.level === 'high') {
-          tooltipContent = `<strong>${spot.name}</strong>: Severely polluted area with high levels of industrial waste and sewage`;
-        } else if (spot.level === 'medium') {
-          tooltipContent = `<strong>${spot.name}</strong>: Moderately polluted with concerning levels of contamination`;
-        } else {
-          tooltipContent = `<strong>${spot.name}</strong>: Lower pollution levels but still requires monitoring`;
-        }
+        // Get color based on pollution level
+        const levelColor = pollutionColors[spot.level] || '#2196f3';
+
+        // Create tooltip content with visual indicators
+        const tooltipContent = `
+          <div style="border-left: 4px solid ${levelColor}; padding-left: 10px;">
+            <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; color: ${levelColor};">
+              ${spot.name}
+            </div>
+            <div style="margin-bottom: 8px;">
+              ${spot.description}
+            </div>
+            <div style="display: flex; align-items: center; font-size: 13px; color: #666;">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${levelColor}; margin-right: 6px;"></div>
+              <div>DO: <strong>${spot.details ? spot.details.do.split(' ')[0] : '?'} mg/L</strong> • Click for details</div>
+            </div>
+          </div>
+        `;
+
         tooltip.innerHTML = tooltipContent;
 
         // Add tooltip to the document body
