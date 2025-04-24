@@ -816,41 +816,37 @@ function initMap() {
       <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
            data-level="pristine">
         <div style="width: 30px; height: 6px; background-color: ${pollutionColors.pristine}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.pristine}"></div>
-        <span>Pristine (DO: >8.0 mg/L)</span>
+        <span>Pristine Water</span>
       </div>
 
       <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
            data-level="excellent">
         <div style="width: 30px; height: 6px; background-color: ${pollutionColors.excellent}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.excellent}"></div>
-        <span>Excellent (DO: 7.0-8.0 mg/L)</span>
+        <span>Excellent Water Quality</span>
       </div>
 
       <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
            data-level="good">
         <div style="width: 30px; height: 6px; background-color: ${pollutionColors.good}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.good}"></div>
-        <span>Good (DO: 6.0-7.0 mg/L)</span>
+        <span>Good Water Quality</span>
       </div>
 
       <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
            data-level="moderate">
         <div style="width: 30px; height: 6px; background-color: ${pollutionColors.moderate}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.moderate}"></div>
-        <span>Moderate (DO: 5.0-6.0 mg/L)</span>
+        <span>Moderate Pollution</span>
       </div>
 
       <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
            data-level="poor">
         <div style="width: 30px; height: 6px; background-color: ${pollutionColors.poor}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.poor}"></div>
-        <span>Poor (DO: 4.0-5.0 mg/L)</span>
+        <span>Poor Water Quality</span>
       </div>
 
       <div class="legend-item" style="display: flex; align-items: center; margin-bottom: 8px; padding: 4px; border-radius: 4px; transition: all 0.2s ease; cursor: pointer;"
            data-level="critical">
         <div style="width: 30px; height: 6px; background-color: ${pollutionColors.critical}; margin-right: 10px; border-radius: 3px; box-shadow: 0 0 5px ${pollutionColors.critical}"></div>
-        <span>Critical (DO: <4.0 mg/L)</span>
-      </div>
-
-      <div style="font-size: 11px; margin-top: 10px; color: #666; text-align: center; border-top: 1px solid #eee; padding-top: 8px;">
-        DO = Dissolved Oxygen, BOD = Biochemical Oxygen Demand
+        <span>Critical Pollution</span>
       </div>
     </div>
   `;
