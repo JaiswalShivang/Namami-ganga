@@ -773,10 +773,10 @@ function initMap() {
         Ganga River
       </div>
       <div style="margin-bottom: 5px;">
-        Water quality varies along the course
+        The sacred river flowing 2,525 km from the Himalayas to the Bay of Bengal
       </div>
       <div style="font-size: 12px; color: #666; font-style: italic;">
-        Move cursor along river for details
+        Move cursor along river for location details
       </div>
     </div>
   `;
@@ -956,15 +956,13 @@ function initMap() {
           'critical': 'Critical'
         };
 
-        // Create detailed tooltip content
+        // Create simplified tooltip content
         nearestSegment = `
           <div style="text-align: left; padding: 5px;">
             <strong>${segmentInfo.name}</strong>
             <div style="margin-top: 5px; font-size: 13px;">
-              <div><span style="color: ${pollutionColors[segmentInfo.level]}; font-weight: bold;">${levelText[segmentInfo.level]}</span> water quality</div>
-              <div style="margin-top: 3px;">Dissolved Oxygen: <strong>${segmentInfo.do} mg/L</strong></div>
-              <div>BOD: <strong>${segmentInfo.bod} mg/L</strong></div>
-              <div style="font-size: 11px; margin-top: 5px; color: #eee;">Hover over markers for more details</div>
+              <div><span style="color: ${pollutionColors[segmentInfo.level]}; font-weight: bold;">${levelText[segmentInfo.level]}</span> section of the river</div>
+              <div style="font-size: 11px; margin-top: 5px; color: #eee;">Click on markers for more details</div>
             </div>
           </div>
         `;
@@ -1082,7 +1080,7 @@ function initMap() {
       sourceTooltip.style.border = '1px solid rgba(0,0,0,0.05)';
       sourceTooltip.style.fontFamily = "'Poppins', sans-serif";
 
-      // Create tooltip content with visual indicators
+      // Create simplified tooltip content
       sourceTooltip.innerHTML = `
         <div style="border-left: 4px solid ${pollutionColors.pristine}; padding-left: 10px;">
           <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; color: ${pollutionColors.pristine};">
@@ -1093,7 +1091,7 @@ function initMap() {
           </div>
           <div style="display: flex; align-items: center; font-size: 13px; color: #666;">
             <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${pollutionColors.pristine}; margin-right: 6px;"></div>
-            <div>DO: <strong>8.5 mg/L</strong> • Pristine water quality</div>
+            <div>Click for more information</div>
           </div>
         </div>
       `;
@@ -1147,7 +1145,7 @@ function initMap() {
       mouthTooltip.style.border = '1px solid rgba(0,0,0,0.05)';
       mouthTooltip.style.fontFamily = "'Poppins', sans-serif";
 
-      // Create tooltip content with visual indicators
+      // Create simplified tooltip content
       mouthTooltip.innerHTML = `
         <div style="border-left: 4px solid ${pollutionColors.moderate}; padding-left: 10px;">
           <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; color: ${pollutionColors.moderate};">
@@ -1158,7 +1156,7 @@ function initMap() {
           </div>
           <div style="display: flex; align-items: center; font-size: 13px; color: #666;">
             <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${pollutionColors.moderate}; margin-right: 6px;"></div>
-            <div>DO: <strong>5.5 mg/L</strong> • Moderate water quality</div>
+            <div>Click for more information</div>
           </div>
         </div>
       `;
@@ -1189,15 +1187,8 @@ function initMap() {
           <div class="info-window">
             <h3>Gangotri (Source)</h3>
             <p>The sacred source of the Ganga river in the Himalayas</p>
-            <p>Water quality measurements:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>7.8 mg/L</strong> (Excellent)</li>
-              <li>BOD levels: <strong>1.2 mg/L</strong> (Pristine)</li>
-              <li>Coliform count: <strong>Minimal</strong></li>
-              <li>Water temperature: <strong>4-6°C</strong></li>
-              <li>pH level: <strong>7.2</strong> (Neutral)</li>
-            </ul>
-            <p>This glacial source provides some of the purest water in the Ganga river system.</p>
+            <p>This glacial source at an altitude of 3,892 meters (12,769 feet) marks the beginning of the Ganga's 2,525 km journey to the Bay of Bengal.</p>
+            <p>The pristine waters here flow from the Gangotri Glacier, one of the largest glaciers in the Himalayas.</p>
           </div>
         `,
         maxWidth: 350
@@ -1208,15 +1199,8 @@ function initMap() {
           <div class="info-window">
             <h3>Ganga Sagar (Mouth)</h3>
             <p>Where the Ganga meets the Bay of Bengal</p>
-            <p>Water quality measurements:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>5.1 mg/L</strong> (Moderate)</li>
-              <li>BOD levels: <strong>4.8 mg/L</strong> (Elevated)</li>
-              <li>Coliform count: <strong>Moderate</strong></li>
-              <li>Salinity: <strong>Variable</strong> (Tidal influence)</li>
-              <li>Turbidity: <strong>High</strong> (Sediment load)</li>
-            </ul>
-            <p>The delta region shows cumulative effects of upstream pollution but benefits from the dilution effect of the ocean.</p>
+            <p>The final destination of the mighty Ganga, where freshwater meets the sea at the Bay of Bengal.</p>
+            <p>This delta region is home to the Sundarbans, the world's largest mangrove forest and a UNESCO World Heritage site.</p>
           </div>
         `,
         maxWidth: 350
@@ -1231,14 +1215,18 @@ function initMap() {
         mouthInfo.open(map, mouthMarker);
       });
     } else {
-      // Fallback to regular Marker
+      // Fallback to regular Marker with custom icons
       sourceMarker = new google.maps.Marker({
         position: gangaCoordinates[0],
         map: map,
         title: 'Gangotri (Source)',
         icon: {
-          url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-          scaledSize: new google.maps.Size(40, 40)
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: pollutionColors.pristine,
+          fillOpacity: 0.9,
+          strokeWeight: 2,
+          strokeColor: '#ffffff',
+          scale: 10
         },
         zIndex: 100
       });
@@ -1248,8 +1236,12 @@ function initMap() {
         map: map,
         title: 'Ganga Sagar (Mouth)',
         icon: {
-          url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-          scaledSize: new google.maps.Size(40, 40)
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: pollutionColors.moderate,
+          fillOpacity: 0.9,
+          strokeWeight: 2,
+          strokeColor: '#ffffff',
+          scale: 10
         },
         zIndex: 100
       });
@@ -1262,8 +1254,12 @@ function initMap() {
       map: map,
       title: 'Gangotri (Source)',
       icon: {
-        url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-        scaledSize: new google.maps.Size(40, 40)
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: pollutionColors.pristine,
+        fillOpacity: 0.9,
+        strokeWeight: 2,
+        strokeColor: '#ffffff',
+        scale: 10
       },
       zIndex: 100
     });
@@ -1273,8 +1269,12 @@ function initMap() {
       map: map,
       title: 'Ganga Sagar (Mouth)',
       icon: {
-        url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-        scaledSize: new google.maps.Size(40, 40)
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: pollutionColors.moderate,
+        fillOpacity: 0.9,
+        strokeWeight: 2,
+        strokeColor: '#ffffff',
+        scale: 10
       },
       zIndex: 100
     });
@@ -1285,15 +1285,8 @@ function initMap() {
       <div class="info-window">
         <h3>Gangotri (Source)</h3>
         <p>The sacred source of the Ganga river in the Himalayas</p>
-        <p>Water quality measurements:</p>
-        <ul class="pollution-details">
-          <li>Dissolved oxygen: <strong>7.8 mg/L</strong> (Excellent)</li>
-          <li>BOD levels: <strong>1.2 mg/L</strong> (Pristine)</li>
-          <li>Coliform count: <strong>Minimal</strong></li>
-          <li>Water temperature: <strong>4-6°C</strong></li>
-          <li>pH level: <strong>7.2</strong> (Neutral)</li>
-        </ul>
-        <p>This glacial source provides some of the purest water in the Ganga river system.</p>
+        <p>This glacial source at an altitude of 3,892 meters (12,769 feet) marks the beginning of the Ganga's 2,525 km journey to the Bay of Bengal.</p>
+        <p>The pristine waters here flow from the Gangotri Glacier, one of the largest glaciers in the Himalayas.</p>
       </div>
     `,
     maxWidth: 350
@@ -1304,15 +1297,8 @@ function initMap() {
       <div class="info-window">
         <h3>Ganga Sagar (Mouth)</h3>
         <p>Where the Ganga meets the Bay of Bengal</p>
-        <p>Water quality measurements:</p>
-        <ul class="pollution-details">
-          <li>Dissolved oxygen: <strong>5.1 mg/L</strong> (Moderate)</li>
-          <li>BOD levels: <strong>4.8 mg/L</strong> (Elevated)</li>
-          <li>Coliform count: <strong>Moderate</strong></li>
-          <li>Salinity: <strong>Variable</strong> (Tidal influence)</li>
-          <li>Turbidity: <strong>High</strong> (Sediment load)</li>
-        </ul>
-        <p>The delta region shows cumulative effects of upstream pollution but benefits from the dilution effect of the ocean.</p>
+        <p>The final destination of the mighty Ganga, where freshwater meets the sea at the Bay of Bengal.</p>
+        <p>This delta region is home to the Sundarbans, the world's largest mangrove forest and a UNESCO World Heritage site.</p>
       </div>
     `,
     maxWidth: 350
@@ -1387,7 +1373,7 @@ function initMap() {
         // Get color based on pollution level
         const levelColor = pollutionColors[spot.level] || '#2196f3';
 
-        // Create tooltip content with visual indicators
+        // Create simplified tooltip content
         const tooltipContent = `
           <div style="border-left: 4px solid ${levelColor}; padding-left: 10px;">
             <div style="font-weight: 600; font-size: 15px; margin-bottom: 5px; color: ${levelColor};">
@@ -1398,7 +1384,7 @@ function initMap() {
             </div>
             <div style="display: flex; align-items: center; font-size: 13px; color: #666;">
               <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${levelColor}; margin-right: 6px;"></div>
-              <div>DO: <strong>${spot.details ? spot.details.do.split(' ')[0] : '?'} mg/L</strong> • Click for details</div>
+              <div>Click for more information</div>
             </div>
           </div>
         `;
@@ -1442,7 +1428,7 @@ function initMap() {
         const infoContent = document.createElement('div');
         infoContent.classList.add('info-window');
 
-        // Create detailed pollution information based on the hotspot data
+        // Create simplified pollution information
         let pollutionDetails = `
           <div class="pollution-details-container">
             <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
@@ -1450,53 +1436,51 @@ function initMap() {
             </h4>
             <p>${spot.description}</p>
 
-            <div class="water-quality-metrics">
-              <h5 style="margin: 12px 0 8px 0;">Water Quality Measurements:</h5>
-              <ul class="pollution-details" style="padding-left: 20px; margin: 0;">
-                <li>Dissolved Oxygen: <strong>${spot.details.do}</strong></li>
-                <li>BOD levels: <strong>${spot.details.bod}</strong></li>
-                <li>Coliform count: <strong>${spot.details.coliform}</strong></li>
-                <li>pH level: <strong>${spot.details.ph}</strong></li>
-                <li>Heavy metals: <strong>${spot.details.heavyMetals}</strong></li>
-              </ul>
-
-              <h5 style="margin: 12px 0 8px 0;">Pollution Sources:</h5>
+            <div class="pollution-sources">
+              <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
               <p style="margin: 0;">${spot.details.pollutionSources}</p>
             </div>
           </div>
         `;
-        if (spot.level === 'high') {
+        // Use consistent format for all pollution levels
+        if (spot.level === 'critical') {
           pollutionDetails = `
-            <p>Water quality is severely compromised with:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>Below 4 mg/L</strong> (Critical)</li>
-              <li>BOD levels: <strong>Above 8 mg/L</strong> (Unsafe)</li>
-              <li>Coliform count: <strong>Very high</strong></li>
-              <li>Heavy metals: <strong>Present</strong></li>
-            </ul>
-            <p>Immediate remediation required.</p>
+            <div class="pollution-details-container">
+              <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                ${spot.name}
+              </h4>
+              <p>${spot.description}</p>
+              <div class="pollution-sources">
+                <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+                <p style="margin: 0;">Critical area requiring immediate intervention. Major sources include industrial discharge, untreated sewage, and chemical waste.</p>
+              </div>
+            </div>
           `;
-        } else if (spot.level === 'medium') {
+        } else if (spot.level === 'poor' || spot.level === 'moderate') {
           pollutionDetails = `
-            <p>Water quality is concerning with:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>4-5 mg/L</strong> (Concerning)</li>
-              <li>BOD levels: <strong>5-8 mg/L</strong> (Elevated)</li>
-              <li>Coliform count: <strong>Moderate</strong></li>
-              <li>Heavy metals: <strong>Trace amounts</strong></li>
-            </ul>
-            <p>Regular monitoring recommended.</p>
+            <div class="pollution-details-container">
+              <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                ${spot.name}
+              </h4>
+              <p>${spot.description}</p>
+              <div class="pollution-sources">
+                <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+                <p style="margin: 0;">Area with concerning pollution levels requiring regular monitoring. Main sources include urban runoff, agricultural activities, and moderate industrial impact.</p>
+              </div>
+            </div>
           `;
         } else {
           pollutionDetails = `
-            <p>Water quality is acceptable with:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>Above 5 mg/L</strong> (Acceptable)</li>
-              <li>BOD levels: <strong>Below 5 mg/L</strong> (Normal)</li>
-              <li>Coliform count: <strong>Low</strong></li>
-              <li>Heavy metals: <strong>Not detected</strong></li>
-            </ul>
-            <p>Continued monitoring advised.</p>
+            <div class="pollution-details-container">
+              <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                ${spot.name}
+              </h4>
+              <p>${spot.description}</p>
+              <div class="pollution-sources">
+                <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+                <p style="margin: 0;">Area with good water quality. Limited pollution sources with primarily natural factors and minimal human impact.</p>
+              </div>
+            </div>
           `;
         }
 
@@ -1533,38 +1517,45 @@ function initMap() {
         });
 
         let pollutionDetails = '';
-        if (spot.level === 'high') {
+        // Use consistent format for all pollution levels
+        if (spot.level === 'critical') {
           pollutionDetails = `
-            <p>Water quality is severely compromised with:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>Below 4 mg/L</strong> (Critical)</li>
-              <li>BOD levels: <strong>Above 8 mg/L</strong> (Unsafe)</li>
-              <li>Coliform count: <strong>Very high</strong></li>
-              <li>Heavy metals: <strong>Present</strong></li>
-            </ul>
-            <p>Immediate remediation required.</p>
+            <div class="pollution-details-container">
+              <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                ${spot.name}
+              </h4>
+              <p>${spot.description}</p>
+              <div class="pollution-sources">
+                <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+                <p style="margin: 0;">Critical area requiring immediate intervention. Major sources include industrial discharge, untreated sewage, and chemical waste.</p>
+              </div>
+            </div>
           `;
-        } else if (spot.level === 'medium') {
+        } else if (spot.level === 'poor' || spot.level === 'moderate') {
           pollutionDetails = `
-            <p>Water quality is concerning with:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>4-5 mg/L</strong> (Concerning)</li>
-              <li>BOD levels: <strong>5-8 mg/L</strong> (Elevated)</li>
-              <li>Coliform count: <strong>Moderate</strong></li>
-              <li>Heavy metals: <strong>Trace amounts</strong></li>
-            </ul>
-            <p>Regular monitoring recommended.</p>
+            <div class="pollution-details-container">
+              <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                ${spot.name}
+              </h4>
+              <p>${spot.description}</p>
+              <div class="pollution-sources">
+                <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+                <p style="margin: 0;">Area with concerning pollution levels requiring regular monitoring. Main sources include urban runoff, agricultural activities, and moderate industrial impact.</p>
+              </div>
+            </div>
           `;
         } else {
           pollutionDetails = `
-            <p>Water quality is acceptable with:</p>
-            <ul class="pollution-details">
-              <li>Dissolved oxygen: <strong>Above 5 mg/L</strong> (Acceptable)</li>
-              <li>BOD levels: <strong>Below 5 mg/L</strong> (Normal)</li>
-              <li>Coliform count: <strong>Low</strong></li>
-              <li>Heavy metals: <strong>Not detected</strong></li>
-            </ul>
-            <p>Continued monitoring advised.</p>
+            <div class="pollution-details-container">
+              <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                ${spot.name}
+              </h4>
+              <p>${spot.description}</p>
+              <div class="pollution-sources">
+                <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+                <p style="margin: 0;">Area with good water quality. Limited pollution sources with primarily natural factors and minimal human impact.</p>
+              </div>
+            </div>
           `;
         }
 
@@ -1604,38 +1595,45 @@ function initMap() {
       });
 
       let pollutionDetails = '';
-      if (spot.level === 'high') {
+      // Use consistent format for all pollution levels
+      if (spot.level === 'critical') {
         pollutionDetails = `
-          <p>Water quality is severely compromised with:</p>
-          <ul class="pollution-details">
-            <li>Dissolved oxygen: <strong>Below 4 mg/L</strong> (Critical)</li>
-            <li>BOD levels: <strong>Above 8 mg/L</strong> (Unsafe)</li>
-            <li>Coliform count: <strong>Very high</strong></li>
-            <li>Heavy metals: <strong>Present</strong></li>
-          </ul>
-          <p>Immediate remediation required.</p>
+          <div class="pollution-details-container">
+            <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+              ${spot.name}
+            </h4>
+            <p>${spot.description}</p>
+            <div class="pollution-sources">
+              <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+              <p style="margin: 0;">Critical area requiring immediate intervention. Major sources include industrial discharge, untreated sewage, and chemical waste.</p>
+            </div>
+          </div>
         `;
-      } else if (spot.level === 'medium') {
+      } else if (spot.level === 'poor' || spot.level === 'moderate') {
         pollutionDetails = `
-          <p>Water quality is concerning with:</p>
-          <ul class="pollution-details">
-            <li>Dissolved oxygen: <strong>4-5 mg/L</strong> (Concerning)</li>
-            <li>BOD levels: <strong>5-8 mg/L</strong> (Elevated)</li>
-            <li>Coliform count: <strong>Moderate</strong></li>
-            <li>Heavy metals: <strong>Trace amounts</strong></li>
-          </ul>
-          <p>Regular monitoring recommended.</p>
+          <div class="pollution-details-container">
+            <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+              ${spot.name}
+            </h4>
+            <p>${spot.description}</p>
+            <div class="pollution-sources">
+              <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+              <p style="margin: 0;">Area with concerning pollution levels requiring regular monitoring. Main sources include urban runoff, agricultural activities, and moderate industrial impact.</p>
+            </div>
+          </div>
         `;
       } else {
         pollutionDetails = `
-          <p>Water quality is acceptable with:</p>
-          <ul class="pollution-details">
-            <li>Dissolved oxygen: <strong>Above 5 mg/L</strong> (Acceptable)</li>
-            <li>BOD levels: <strong>Below 5 mg/L</strong> (Normal)</li>
-            <li>Coliform count: <strong>Low</strong></li>
-            <li>Heavy metals: <strong>Not detected</strong></li>
-          </ul>
-          <p>Continued monitoring advised.</p>
+          <div class="pollution-details-container">
+            <h4 style="margin-top: 0; color: ${pollutionColors[spot.level] || '#2196f3'}; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+              ${spot.name}
+            </h4>
+            <p>${spot.description}</p>
+            <div class="pollution-sources">
+              <h5 style="margin: 12px 0 8px 0;">Key Information:</h5>
+              <p style="margin: 0;">Area with good water quality. Limited pollution sources with primarily natural factors and minimal human impact.</p>
+            </div>
+          </div>
         `;
       }
 
