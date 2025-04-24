@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Namami Ganga Project - National Mission for Clean Ganga">
+  <title>Namami Ganga Project - National Mission for Clean Ganga</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>" type="image/svg+xml">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- AOS Animation Library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+  <!-- Chart.js for Data Visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom JavaScript first to define functions -->
+  <script src="script.js"></script>
+
+  <!-- Google Maps API with key -->
+  <script>
+    function loadGoogleMaps() {
+      const mapTimeout = setTimeout(() => {
+        console.log('Map loading timeout - showing fallback');
+        const mapLoading = document.querySelector('.map-loading');
+        const mapFallback = document.querySelector('.map-fallback');
+        if (mapLoading) mapLoading.style.display = 'none';
+        if (mapFallback) mapFallback.style.display = 'block';
+      }, 5000);
+
+      window.mapLoadingTimeout = mapTimeout;
+
+      const script = document.createElement('script');
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDLQEIfvCNg9Pj9ZGBWSTGzYnKa_v-QfGM&libraries=places,marker&callback=initMap&loading=async&v=beta';
+      script.async = true;
+      script.defer = true;
+
+      script.onerror = () => {
+        console.error('Google Maps API failed to load');
+        clearTimeout(window.mapLoadingTimeout);
+        const mapLoading = document.querySelector('.map-loading');
+        const mapFallback = document.querySelector('.map-fallback');
+        if (mapLoading) mapLoading.style.display = 'none';
+        if (mapFallback) mapFallback.style.display = 'block';
+      };
+
+      document.head.appendChild(script);
+    }
+
+    window.addEventListener('load', loadGoogleMaps);
+  </script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Animate.css for additional animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <!-- Particles.js for animated background -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <img src="images/g20-logo.png" alt="Namami Ganga Logo" style="height: 40px;">
+          <h1>Namami Ganga</h1>
+        </div>
+
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#pollution-tracker">Pollution Tracker</a></li>
+          <li><a href="#initiative">Initiative</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-logo">
+          <img src="images/g20-logo.png" alt="G20 Logo" class="g20-logo">
+          <img src="images/satyamev_jayate.png" alt="Satyamev Jayate Logo" class="satyamev-logo">
+        </div>
+        <h1>Namami Ganga Project</h1>
+        <p>Join the mission to clean, protect and revitalize the Ganga - India's lifeline and spiritual heart.</p>
+        <div class="hero-btns">
+          <a href="#pollution-tracker" class="btn">View Pollution Map</a>
+          <a href="#contact" class="btn btn-outline">Report Pollution</a>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about section">
+    <div class="container">
+      <div class="section-title">
+        <h2>About Ganga</h2>
+        <p>The sacred river that sustains millions and holds deep cultural significance</p>
+      </div>
+
+      <div class="about-content">
+        <div class="about-text" data-aos="fade-right">
+          <h3>The Lifeline of India</h3>
+          <p>The Ganges, also known as Ganga, is a trans-boundary river of Asia which flows through India and Bangladesh. The 2,525 km river rises in the western Himalayas in the Indian state of Uttarakhand, and flows south and east through the Gangetic Plain of North India.</p>
+          <p>The Ganga is the most sacred river to Hindus. It is also a lifeline to millions of Indians who live along its course and depend on it for their daily needs. It is worshipped as the goddess Ganga in Hinduism.</p>
+
+          <div class="about-stats">
+            <div class="stat-item">
+              <h4 data-target="2525">0</h4>
+              <p>Kilometers Length</p>
+            </div>
+            <div class="stat-item">
+              <h4 data-target="450">0</h4>
+              <p>Million People Supported</p>
+            </div>
+            <div class="stat-item">
+              <h4 data-target="40">0</h4>
+              <p>Percent of India's Water</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-img-container" data-aos="fade-left">
+          <div class="about-img main-img">
+            <img src="images/gangaimage.jpg" alt="Ganga River">
+          </div>
+          <div class="about-img-grid">
+            <div class="about-img small-img">
+              <img src="images/riverside ganga.webp" alt="Riverside Ganga">
+            </div>
+            <div class="about-img small-img">
+              <img src="images/Ganga-Aarti-Varanasi-1.webp" alt="Ganga Aarti">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pollution Tracker Section -->
+  <section id="pollution-tracker" class="pollution-tracker section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Pollution Tracker</h2>
+        <p>Monitoring the health of our sacred river through real-time data</p>
+      </div>
+
+      <div class="tracker-content">
+        <div class="map-container" data-aos="fade-up">
+          <div id="pollutionMap"></div>
+          <div class="map-loading">
+            <i class="fas fa-spinner fa-spin fa-3x"></i>
+            <p>Loading Ganga River Map...</p>
+            <div class="loading-progress">
+              <div class="loading-bar"></div>
+            </div>
+          </div>
+          <div class="map-fallback" style="display: none;">
+            <img src="images/gangaimage.jpg" alt="Ganga River Map" class="fallback-image">
+            <div class="fallback-overlay">
+              <i class="fas fa-map-marked-alt fa-3x"></i>
+              <h3>Interactive Map Unavailable</h3>
+              <p>The interactive pollution map could not be loaded. Please check your internet connection or try again later.</p>
+              <button class="btn btn-sm" onclick="window.location.reload()">Try Again</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pollution-info" data-aos="fade-up">
+          <h3>Critical Pollution Hotspots</h3>
+          <p>The Ganga faces severe pollution challenges from industrial discharge, sewage, agricultural runoff, and religious practices. Our interactive map highlights the most affected areas along the river's course.</p>
+
+          <div class="pollution-levels">
+            <div class="pollution-level" data-aos="fade-up" data-aos-delay="100">
+              <div class="level-indicator level-high"></div>
+              <div class="level-info">
+                <h5>High Pollution Zones</h5>
+                <p>Areas with critical levels of pollution requiring immediate intervention</p>
+              </div>
+            </div>
+
+            <div class="pollution-level" data-aos="fade-up" data-aos-delay="200">
+              <div class="level-indicator level-medium"></div>
+              <div class="level-info">
+                <h5>Medium Pollution Zones</h5>
+                <p>Areas with concerning levels of pollution requiring monitoring</p>
+              </div>
+            </div>
+
+            <div class="pollution-level" data-aos="fade-up" data-aos-delay="300">
+              <div class="level-indicator level-low"></div>
+              <div class="level-info">
+                <h5>Low Pollution Zones</h5>
+                <p>Areas with manageable levels of pollution</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="water-quality-chart" data-aos="fade-up">
+            <h4>Water Quality Trends</h4>
+            <canvas id="waterQualityChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Initiative Section -->
+  <section id="initiative" class="initiative section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Namami Gange Initiative</h2>
+        <p>A comprehensive approach to rejuvenate the Ganga ecosystem</p>
+      </div>
+
+      <div class="initiative-content">
+        <div class="initiative-grid">
+          <div class="initiative-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="initiative-icon">
+              <i class="fas fa-water"></i>
+            </div>
+            <h4>Sewage Treatment</h4>
+            <p>Creating and upgrading sewage treatment infrastructure to prevent untreated waste from entering the river.</p>
+          </div>
+
+          <div class="initiative-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="initiative-icon">
+              <i class="fas fa-industry"></i>
+            </div>
+            <h4>Industrial Pollution Control</h4>
+            <p>Implementing strict regulations and monitoring systems for industries along the Ganga basin.</p>
+          </div>
+
+          <div class="initiative-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="initiative-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <h4>Afforestation</h4>
+            <p>Planting trees along the riverbanks to prevent soil erosion and maintain ecological balance.</p>
+          </div>
+
+          <div class="initiative-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="initiative-icon">
+              <i class="fas fa-hands-helping"></i>
+            </div>
+            <h4>Community Participation</h4>
+            <p>Engaging local communities in river cleaning, monitoring, and awareness programs.</p>
+          </div>
+
+          <div class="initiative-card" data-aos="fade-up" data-aos-delay="500">
+            <div class="initiative-icon">
+              <i class="fas fa-microscope"></i>
+            </div>
+            <h4>Research & Monitoring</h4>
+            <p>Continuous scientific research and water quality monitoring to guide conservation efforts.</p>
+          </div>
+
+          <div class="initiative-card" data-aos="fade-up" data-aos-delay="600">
+            <div class="initiative-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <h4>Public Awareness</h4>
+            <p>Educational campaigns to promote responsible behavior and cultural practices that protect the river.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="gallery section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Ganga Gallery</h2>
+        <p>Capturing the beauty, spirituality, and challenges of India's most sacred river</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+          <img src="images/Ganga-Aarti-Varanasi-1.webp" alt="Ganga Aarti at Varanasi">
+          <div class="gallery-overlay">
+            <h4>Ganga Aarti at Varanasi</h4>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+          <img src="images/pollution change ganga.jpg" alt="Pollution Challenge">
+          <div class="gallery-overlay">
+            <h4>Pollution Challenges</h4>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="400">
+          <img src="images/07_03_2021-cleaning_vns_21437037.jpg" alt="Clean-up Drive">
+          <div class="gallery-overlay">
+            <h4>Community Clean-up Drive</h4>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="500">
+          <img src="images/riverside ganga.webp" alt="Riverside Life">
+          <div class="gallery-overlay">
+            <h4>Life Along the Riverbanks</h4>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="600">
+          <img src="images/biodiversity ganga.webp" alt="Biodiversity">
+          <div class="gallery-overlay">
+            <h4>River Biodiversity</h4>
+          </div>
+        </div>
+
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="700">
+          <img src="images/gangaimage.jpg" alt="Ganga River View">
+          <div class="gallery-overlay">
+            <h4>Ganga River View</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Contact Us</h2>
+        <p>Report pollution, join our initiatives, or learn more about our efforts</p>
+      </div>
+
+      <div class="contact-content">
+        <div class="contact-info" data-aos="fade-right">
+          <h3>Get in Touch</h3>
+          <p>We welcome your feedback, questions, and reports about pollution along the Ganga. Together, we can make a difference in preserving this sacred river for future generations.</p>
+
+          <div class="contact-details">
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="contact-text">
+                123 Ganga Marg, New Delhi, India 110001
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="contact-text">
+                +91 98765 43210
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-text">
+                info@namamiganga.org
+              </div>
+            </div>
+          </div>
+
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="contact-form" data-aos="fade-left">
+          <form id="contactForm">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" class="form-control" placeholder="Enter your name">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" class="form-control" placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" class="form-control" placeholder="Enter subject">
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" class="form-control" placeholder="Enter your message"></textarea>
+            </div>
+
+            <button type="submit" class="btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-about" data-aos="fade-up">
+          <h3><i class="fas fa-water"></i> Namami Ganga</h3>
+          <p>A national mission to clean and protect the Ganga river, ensuring its ecological and cultural preservation for generations to come.</p>
+
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links" data-aos="fade-up" data-aos-delay="100">
+          <h4><i class="fas fa-link"></i> Quick Links</h4>
+          <ul>
+            <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="#about"><i class="fas fa-chevron-right"></i> About</a></li>
+            <li><a href="#pollution-tracker"><i class="fas fa-chevron-right"></i> Pollution Tracker</a></li>
+            <li><a href="#initiative"><i class="fas fa-chevron-right"></i> Initiative</a></li>
+            <li><a href="#gallery"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+            <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links" data-aos="fade-up" data-aos-delay="200">
+          <h4><i class="fas fa-book"></i> Resources</h4>
+          <ul>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Research Papers</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Water Quality Data</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Project Reports</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> News & Updates</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> FAQs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links" data-aos="fade-up" data-aos-delay="300">
+          <h4><i class="fas fa-hands-helping"></i> Get Involved</h4>
+          <ul>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Volunteer</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Donate</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Report Pollution</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Spread Awareness</a></li>
+            <li><a href="#"><i class="fas fa-chevron-right"></i> Partner With Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copyright">
+        <p>&copy; 2023 Namami Ganga Project. All Rights Reserved.</p>
+        <p class="made-with">Made with <i class="fas fa-heart"></i> for Mother Ganga</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- AOS Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+</body>
+</html>
