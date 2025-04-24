@@ -668,28 +668,16 @@ header {
   flex-shrink: 0;
 }
 
-.level-critical {
-  background-color: #F44336; /* Red */
+.level-high {
+  background-color: var(--danger);
 }
 
-.level-poor {
-  background-color: #FF9800; /* Orange */
+.level-medium {
+  background-color: #ff9800;
 }
 
-.level-moderate {
-  background-color: #FFEB3B; /* Yellow */
-}
-
-.level-good {
-  background-color: #76FF03; /* Light Green */
-}
-
-.level-excellent {
-  background-color: #00E676; /* Green */
-}
-
-.level-pristine {
-  background-color: #1DE9B6; /* Teal */
+.level-low {
+  background-color: var(--success);
 }
 
 .level-info {
