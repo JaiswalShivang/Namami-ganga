@@ -1,6 +1,5 @@
-// Namami Ganga Project - Main JavaScript
 
-// Initialize AOS when DOM is loaded
+
 function initAOS() {
   AOS.init({
     duration: 800,
@@ -10,12 +9,9 @@ function initAOS() {
   });
 }
 
-// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize AOS
   initAOS();
 
-  // Check if Google Maps API failed to load after 5 seconds
   setTimeout(function() {
     if (typeof google === 'undefined') {
       console.log('Google Maps API failed to load, showing fallback');
@@ -23,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const mapLoading = document.querySelector('.map-loading');
 
       if (mapContainer) {
-        // Hide loading indicator
         if (mapLoading) {
           mapLoading.style.display = 'none';
         }
@@ -132,12 +127,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent the default form submission
 
-      // Basic validation
+      // Client-side validation
       let valid = true;
       const name = document.getElementById('name');
       const email = document.getElementById('email');
+      const subject = document.getElementById('subject');
       const message = document.getElementById('message');
 
       if (name.value.trim() === '') {
@@ -157,6 +153,13 @@ document.addEventListener('DOMContentLoaded', function() {
         removeError(email);
       }
 
+      if (subject.value.trim() === '') {
+        showError(subject, 'Subject is required');
+        valid = false;
+      } else {
+        removeError(subject);
+      }
+
       if (message.value.trim() === '') {
         showError(message, 'Message is required');
         valid = false;
@@ -165,18 +168,68 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       if (valid) {
-        // Show success message
-        const successMessage = document.createElement('div');
-        successMessage.classList.add('success-message');
-        successMessage.textContent = 'Your message has been sent successfully!';
+        // Show a "Sending..." message
+        const sendingMessage = document.createElement('div');
+        sendingMessage.classList.add('sending-message');
+        sendingMessage.innerHTML = '<i class="fas fa-paper-plane"></i> Sending your message...';
+        contactForm.appendChild(sendingMessage);
 
-        contactForm.reset();
-        contactForm.appendChild(successMessage);
+        // Collect form data
+        const formData = new FormData(contactForm);
 
-        // Remove success message after 3 seconds
-        setTimeout(() => {
-          contactForm.removeChild(successMessage);
-        }, 3000);
+        // Submit the form data to getform.io using fetch API
+        fetch('https://getform.io/f/axowxmxb', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            // Remove sending message
+            contactForm.removeChild(sendingMessage);
+
+            // Show success message
+            const successMessage = document.createElement('div');
+            successMessage.classList.add('success-message');
+            successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Your message has been sent successfully!';
+            contactForm.appendChild(successMessage);
+
+            // Reset the form
+            contactForm.reset();
+
+            // Remove success message after 5 seconds
+            setTimeout(() => {
+              if (contactForm.contains(successMessage)) {
+                contactForm.removeChild(successMessage);
+              }
+            }, 5000);
+          } else {
+            throw new Error('Form submission failed');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+
+          // Remove sending message
+          if (contactForm.contains(sendingMessage)) {
+            contactForm.removeChild(sendingMessage);
+          }
+
+          // Show error message
+          const errorMessage = document.createElement('div');
+          errorMessage.classList.add('error-message');
+          errorMessage.innerHTML = '<i class="fas fa-exclamation-circle"></i> There was a problem sending your message. Please try again.';
+          contactForm.appendChild(errorMessage);
+
+          // Remove error message after 5 seconds
+          setTimeout(() => {
+            if (contactForm.contains(errorMessage)) {
+              contactForm.removeChild(errorMessage);
+            }
+          }, 5000);
+        });
       }
     });
   }
@@ -264,16 +317,26 @@ function initMap() {
   // Create the map centered on the Ganges river
   const gangaCenter = { lat: 25.3176, lng: 83.0130 }; // Varanasi as center point
 
-  // Custom map style for better river visibility
+  // Custom map style for better river visibility and aesthetics
   const mapStyles = [
-    { elementType: 'geometry', stylers: [{ color: '#f5f5f5' }] },
-    { elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
-    { elementType: 'labels.text.stroke', stylers: [{ color: '#f5f5f5' }] },
-    { featureType: 'administrative.land_parcel', elementType: 'labels.text.fill', stylers: [{ color: '#bdbdbd' }] },
-    { featureType: 'water', elementType: 'geometry.fill', stylers: [{ color: '#1e88e5' }] },
+    { elementType: 'geometry', stylers: [{ color: '#f8f8f8' }] },
+    { elementType: 'labels.text.fill', stylers: [{ color: '#4a4a4a' }] },
+    { elementType: 'labels.text.stroke', stylers: [{ color: '#ffffff' }] },
+    { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#d4d4d4' }] },
+    { featureType: 'administrative.land_parcel', elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
+    { featureType: 'administrative.province', elementType: 'geometry.stroke', stylers: [{ color: '#c8c8c8' }] },
+    { featureType: 'water', elementType: 'geometry.fill', stylers: [{ color: '#1976d2' }] },
+    { featureType: 'water', elementType: 'geometry.stroke', stylers: [{ color: '#1565c0' }] },
     { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#ffffff' }] },
-    { featureType: 'road', elementType: 'geometry', stylers: [{ visibility: 'simplified' }] },
-    { featureType: 'landscape.natural', elementType: 'geometry.fill', stylers: [{ color: '#e8f5e9' }] }
+    { featureType: 'road', elementType: 'geometry', stylers: [{ visibility: 'simplified' }, { color: '#e0e0e0' }] },
+    { featureType: 'road.arterial', elementType: 'geometry', stylers: [{ color: '#d9d9d9' }] },
+    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#c8c8c8' }] },
+    { featureType: 'landscape.natural', elementType: 'geometry.fill', stylers: [{ color: '#e8f5e9' }] },
+    { featureType: 'landscape.man_made', elementType: 'geometry.fill', stylers: [{ color: '#f0f0f0' }] },
+    { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#e0f2f1' }] },
+    { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#c8e6c9' }] },
+    { featureType: 'poi.business', stylers: [{ visibility: 'off' }] },
+    { featureType: 'transit', stylers: [{ visibility: 'off' }] }
   ];
 
   // Map options
@@ -298,7 +361,7 @@ function initMap() {
       position: google.maps.ControlPosition.RIGHT_TOP
     },
     // Add Map ID for Advanced Markers
-    mapId: '8f066f0a7f1e3c0c'
+    mapId: 'a3efe1c035c9b8e4'
   };
 
   // Create the map with error handling
@@ -337,27 +400,120 @@ function initMap() {
     { lat: 21.7679, lng: 88.1108 }  // Ganga Sagar (mouth)
   ];
 
-  // Create river path with animation
+  // Create river path with enhanced animation
   const gangaPath = new google.maps.Polyline({
     path: gangaCoordinates,
     geodesic: true,
-    strokeColor: '#1e88e5',
-    strokeOpacity: 0.8,
-    strokeWeight: 4,
+    strokeColor: '#2196f3',
+    strokeOpacity: 0.9,
+    strokeWeight: 5,
     icons: [{
       icon: {
         path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-        scale: 3,
-        fillColor: '#1e88e5',
-        fillOpacity: 0.8,
-        strokeWeight: 1
+        scale: 3.5,
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        strokeWeight: 1,
+        strokeColor: '#0d47a1'
       },
-      repeat: '100px'
+      repeat: '80px'
     }]
   });
 
+  // Create tooltip for river path
+  const riverTooltip = document.createElement('div');
+  riverTooltip.className = 'map-tooltip river-tooltip';
+  riverTooltip.style.display = 'none';
+  riverTooltip.style.position = 'absolute';
+  riverTooltip.style.zIndex = '1000';
+  riverTooltip.style.backgroundColor = 'rgba(33, 150, 243, 0.9)';
+  riverTooltip.style.color = 'white';
+  riverTooltip.style.padding = '8px 12px';
+  riverTooltip.style.borderRadius = '6px';
+  riverTooltip.style.fontSize = '14px';
+  riverTooltip.style.pointerEvents = 'none';
+  riverTooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+  riverTooltip.style.maxWidth = '250px';
+  riverTooltip.style.textAlign = 'center';
+  riverTooltip.style.transform = 'translate(-50%, -130%)';
+  riverTooltip.innerHTML = '<strong>Ganga River</strong>: Water quality varies along the course';
+  document.body.appendChild(riverTooltip);
+
   // Add the river path to the map
   gangaPath.setMap(map);
+
+  // Add mousemove listener to the map to show river tooltip
+  map.addListener('mousemove', (event) => {
+    // Check if mouse is near the river path
+    const point = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+    let isNearPath = false;
+    let nearestSegment = '';
+
+    // Check distance to each segment of the path
+    for (let i = 0; i < gangaCoordinates.length - 1; i++) {
+      const start = new google.maps.LatLng(gangaCoordinates[i].lat, gangaCoordinates[i].lng);
+      const end = new google.maps.LatLng(gangaCoordinates[i+1].lat, gangaCoordinates[i+1].lng);
+
+      // Calculate distance from point to line segment
+      const distance = distanceToLineSegment(point, start, end);
+
+      // If within threshold distance, consider it near the path
+      if (distance < 0.05) { // Threshold in degrees, adjust as needed
+        isNearPath = true;
+
+        // Determine which segment of the river this is
+        if (i < 3) {
+          nearestSegment = 'Upper Ganga: Excellent water quality (DO: 7.0-8.0 mg/L)';
+        } else if (i < 7) {
+          nearestSegment = 'Middle Ganga: Moderate pollution (DO: 5.0-6.0 mg/L)';
+        } else {
+          nearestSegment = 'Lower Ganga: Higher pollution levels (DO: 4.0-5.0 mg/L)';
+        }
+
+        break;
+      }
+    }
+
+    // Update tooltip
+    if (isNearPath) {
+      riverTooltip.style.display = 'block';
+      riverTooltip.innerHTML = `<strong>Ganga River</strong>: ${nearestSegment}`;
+      riverTooltip.style.left = event.pixel.x + 'px';
+      riverTooltip.style.top = event.pixel.y + 'px';
+    } else {
+      riverTooltip.style.display = 'none';
+    }
+  });
+
+  // Helper function to calculate distance from point to line segment
+  function distanceToLineSegment(p, v, w) {
+    // Convert to simple points for calculation
+    const p1 = { x: p.lat(), y: p.lng() };
+    const v1 = { x: v.lat(), y: v.lng() };
+    const w1 = { x: w.lat(), y: w.lng() };
+
+    // Calculate squared length of line segment
+    const l2 = Math.pow(v1.x - w1.x, 2) + Math.pow(v1.y - w1.y, 2);
+
+    // If segment is a point, return distance to the point
+    if (l2 === 0) return Math.sqrt(Math.pow(p1.x - v1.x, 2) + Math.pow(p1.y - v1.y, 2));
+
+    // Calculate projection of point onto line
+    const t = ((p1.x - v1.x) * (w1.x - v1.x) + (p1.y - v1.y) * (w1.y - v1.y)) / l2;
+
+    // If projection is outside segment, return distance to nearest endpoint
+    if (t < 0) return Math.sqrt(Math.pow(p1.x - v1.x, 2) + Math.pow(p1.y - v1.y, 2));
+    if (t > 1) return Math.sqrt(Math.pow(p1.x - w1.x, 2) + Math.pow(p1.y - w1.y, 2));
+
+    // Calculate projection point
+    const proj = {
+      x: v1.x + t * (w1.x - v1.x),
+      y: v1.y + t * (w1.y - v1.y)
+    };
+
+    // Return distance to projection point
+    return Math.sqrt(Math.pow(p1.x - proj.x, 2) + Math.pow(p1.y - proj.y, 2));
+  }
 
   // Animate the river flow
   let count = 0;
@@ -386,45 +542,119 @@ function initMap() {
   try {
     // Try to use AdvancedMarkerElement (recommended by Google)
     if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
-      // Create source marker
+      // Create source marker with enhanced styling
       const sourcePin = new google.maps.marker.PinElement({
-        background: '#1e88e5',
+        background: '#0d47a1',
         glyph: 'S',
         borderColor: '#ffffff',
-        scale: 1.2
+        scale: 1.4,
+        glyphColor: '#ffffff'
       });
+
+      // Create tooltip for source marker
+      const sourceTooltip = document.createElement('div');
+      sourceTooltip.className = 'map-tooltip source-tooltip';
+      sourceTooltip.style.display = 'none';
+      sourceTooltip.style.position = 'absolute';
+      sourceTooltip.style.zIndex = '1000';
+      sourceTooltip.style.backgroundColor = 'rgba(13, 71, 161, 0.9)';
+      sourceTooltip.style.color = 'white';
+      sourceTooltip.style.padding = '8px 12px';
+      sourceTooltip.style.borderRadius = '6px';
+      sourceTooltip.style.fontSize = '14px';
+      sourceTooltip.style.pointerEvents = 'none';
+      sourceTooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+      sourceTooltip.style.maxWidth = '250px';
+      sourceTooltip.style.textAlign = 'center';
+      sourceTooltip.style.transform = 'translate(-50%, -130%)';
+      sourceTooltip.innerHTML = '<strong>Gangotri (Source)</strong>: Pristine water quality with high oxygen levels (7.8 mg/L)';
+      document.body.appendChild(sourceTooltip);
 
       sourceMarker = new google.maps.marker.AdvancedMarkerElement({
         position: gangaCoordinates[0],
         map: map,
         title: 'Gangotri (Source)',
-        content: sourcePin.element
+        content: sourcePin.element,
+        zIndex: 200
       });
 
-      // Create mouth marker
+      // Add hover events to source marker
+      sourcePin.element.addEventListener('mouseenter', () => {
+        sourceTooltip.style.display = 'block';
+        const rect = sourcePin.element.getBoundingClientRect();
+        sourceTooltip.style.left = rect.left + rect.width/2 + 'px';
+        sourceTooltip.style.top = rect.top + 'px';
+      });
+
+      sourcePin.element.addEventListener('mouseleave', () => {
+        sourceTooltip.style.display = 'none';
+      });
+
+      // Create mouth marker with enhanced styling
       const mouthPin = new google.maps.marker.PinElement({
-        background: '#1e88e5',
+        background: '#0d47a1',
         glyph: 'M',
         borderColor: '#ffffff',
-        scale: 1.2
+        scale: 1.4,
+        glyphColor: '#ffffff'
       });
+
+      // Create tooltip for mouth marker
+      const mouthTooltip = document.createElement('div');
+      mouthTooltip.className = 'map-tooltip mouth-tooltip';
+      mouthTooltip.style.display = 'none';
+      mouthTooltip.style.position = 'absolute';
+      mouthTooltip.style.zIndex = '1000';
+      mouthTooltip.style.backgroundColor = 'rgba(13, 71, 161, 0.9)';
+      mouthTooltip.style.color = 'white';
+      mouthTooltip.style.padding = '8px 12px';
+      mouthTooltip.style.borderRadius = '6px';
+      mouthTooltip.style.fontSize = '14px';
+      mouthTooltip.style.pointerEvents = 'none';
+      mouthTooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+      mouthTooltip.style.maxWidth = '250px';
+      mouthTooltip.style.textAlign = 'center';
+      mouthTooltip.style.transform = 'translate(-50%, -130%)';
+      mouthTooltip.innerHTML = '<strong>Ganga Sagar (Mouth)</strong>: Moderate water quality with oxygen levels of 5.1 mg/L';
+      document.body.appendChild(mouthTooltip);
 
       mouthMarker = new google.maps.marker.AdvancedMarkerElement({
         position: gangaCoordinates[gangaCoordinates.length - 1],
         map: map,
         title: 'Ganga Sagar (Mouth)',
-        content: mouthPin.element
+        content: mouthPin.element,
+        zIndex: 200
       });
 
-      // Create info windows for source and mouth
+      // Add hover events to mouth marker
+      mouthPin.element.addEventListener('mouseenter', () => {
+        mouthTooltip.style.display = 'block';
+        const rect = mouthPin.element.getBoundingClientRect();
+        mouthTooltip.style.left = rect.left + rect.width/2 + 'px';
+        mouthTooltip.style.top = rect.top + 'px';
+      });
+
+      mouthPin.element.addEventListener('mouseleave', () => {
+        mouthTooltip.style.display = 'none';
+      });
+
       const sourceInfo = new google.maps.InfoWindow({
         content: `
           <div class="info-window">
             <h3>Gangotri (Source)</h3>
             <p>The sacred source of the Ganga river in the Himalayas</p>
+            <p>Water quality measurements:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>7.8 mg/L</strong> (Excellent)</li>
+              <li>BOD levels: <strong>1.2 mg/L</strong> (Pristine)</li>
+              <li>Coliform count: <strong>Minimal</strong></li>
+              <li>Water temperature: <strong>4-6°C</strong></li>
+              <li>pH level: <strong>7.2</strong> (Neutral)</li>
+            </ul>
+            <p>This glacial source provides some of the purest water in the Ganga river system.</p>
           </div>
         `,
-        maxWidth: 300
+        maxWidth: 350
       });
 
       const mouthInfo = new google.maps.InfoWindow({
@@ -432,9 +662,18 @@ function initMap() {
           <div class="info-window">
             <h3>Ganga Sagar (Mouth)</h3>
             <p>Where the Ganga meets the Bay of Bengal</p>
+            <p>Water quality measurements:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>5.1 mg/L</strong> (Moderate)</li>
+              <li>BOD levels: <strong>4.8 mg/L</strong> (Elevated)</li>
+              <li>Coliform count: <strong>Moderate</strong></li>
+              <li>Salinity: <strong>Variable</strong> (Tidal influence)</li>
+              <li>Turbidity: <strong>High</strong> (Sediment load)</li>
+            </ul>
+            <p>The delta region shows cumulative effects of upstream pollution but benefits from the dilution effect of the ocean.</p>
           </div>
         `,
-        maxWidth: 300
+        maxWidth: 350
       });
 
       // Add event listeners for advanced markers - using gmp-click
@@ -495,15 +734,23 @@ function initMap() {
     });
   }
 
-  // Create info windows for source and mouth
   const sourceInfo = new google.maps.InfoWindow({
     content: `
       <div class="info-window">
         <h3>Gangotri (Source)</h3>
         <p>The sacred source of the Ganga river in the Himalayas</p>
+        <p>Water quality measurements:</p>
+        <ul class="pollution-details">
+          <li>Dissolved oxygen: <strong>7.8 mg/L</strong> (Excellent)</li>
+          <li>BOD levels: <strong>1.2 mg/L</strong> (Pristine)</li>
+          <li>Coliform count: <strong>Minimal</strong></li>
+          <li>Water temperature: <strong>4-6°C</strong></li>
+          <li>pH level: <strong>7.2</strong> (Neutral)</li>
+        </ul>
+        <p>This glacial source provides some of the purest water in the Ganga river system.</p>
       </div>
     `,
-    maxWidth: 300
+    maxWidth: 350
   });
 
   const mouthInfo = new google.maps.InfoWindow({
@@ -511,9 +758,18 @@ function initMap() {
       <div class="info-window">
         <h3>Ganga Sagar (Mouth)</h3>
         <p>Where the Ganga meets the Bay of Bengal</p>
+        <p>Water quality measurements:</p>
+        <ul class="pollution-details">
+          <li>Dissolved oxygen: <strong>5.1 mg/L</strong> (Moderate)</li>
+          <li>BOD levels: <strong>4.8 mg/L</strong> (Elevated)</li>
+          <li>Coliform count: <strong>Moderate</strong></li>
+          <li>Salinity: <strong>Variable</strong> (Tidal influence)</li>
+          <li>Turbidity: <strong>High</strong> (Sediment load)</li>
+        </ul>
+        <p>The delta region shows cumulative effects of upstream pollution but benefits from the dilution effect of the ocean.</p>
       </div>
     `,
-    maxWidth: 300
+    maxWidth: 350
   });
 
   // Add click listeners for source and mouth markers
@@ -548,14 +804,51 @@ function initMap() {
 
       // Try to use AdvancedMarkerElement if available
       if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
-        // Create a custom pin for the pollution hotspot
+        // Create a custom pin for the pollution hotspot with enhanced styling
         const pinBackground = document.createElement('div');
-        pinBackground.style.width = '20px';
-        pinBackground.style.height = '20px';
+        pinBackground.style.width = '24px';
+        pinBackground.style.height = '24px';
         pinBackground.style.borderRadius = '50%';
         pinBackground.style.backgroundColor = markerColor;
-        pinBackground.style.border = '2px solid white';
-        pinBackground.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+        pinBackground.style.border = '3px solid white';
+        pinBackground.style.boxShadow = '0 3px 8px rgba(0,0,0,0.4)';
+        pinBackground.style.transition = 'transform 0.3s ease';
+
+        // Add pulse animation for high pollution areas
+        if (spot.level === 'high') {
+          pinBackground.style.animation = 'pulse 2s infinite';
+        }
+
+        // Create a tooltip element for hover
+        const tooltip = document.createElement('div');
+        tooltip.className = 'map-tooltip';
+        tooltip.style.display = 'none';
+        tooltip.style.position = 'absolute';
+        tooltip.style.zIndex = '1000';
+        tooltip.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        tooltip.style.color = 'white';
+        tooltip.style.padding = '8px 12px';
+        tooltip.style.borderRadius = '6px';
+        tooltip.style.fontSize = '14px';
+        tooltip.style.pointerEvents = 'none';
+        tooltip.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
+        tooltip.style.maxWidth = '250px';
+        tooltip.style.textAlign = 'center';
+        tooltip.style.transform = 'translate(-50%, -130%)';
+
+        // Set tooltip content based on pollution level
+        let tooltipContent = '';
+        if (spot.level === 'high') {
+          tooltipContent = `<strong>${spot.name}</strong>: Severely polluted area with high levels of industrial waste and sewage`;
+        } else if (spot.level === 'medium') {
+          tooltipContent = `<strong>${spot.name}</strong>: Moderately polluted with concerning levels of contamination`;
+        } else {
+          tooltipContent = `<strong>${spot.name}</strong>: Lower pollution levels but still requires monitoring`;
+        }
+        tooltip.innerHTML = tooltipContent;
+
+        // Add tooltip to the document body
+        document.body.appendChild(tooltip);
 
         // Create the advanced marker
         marker = new google.maps.marker.AdvancedMarkerElement({
@@ -565,13 +858,73 @@ function initMap() {
           content: pinBackground
         });
 
-        // Create info window content
+        // Add hover events to the marker
+        pinBackground.addEventListener('mouseenter', () => {
+          tooltip.style.display = 'block';
+
+          // Position the tooltip near the marker
+          const rect = pinBackground.getBoundingClientRect();
+          tooltip.style.left = rect.left + rect.width/2 + 'px';
+          tooltip.style.top = rect.top + 'px';
+        });
+
+        pinBackground.addEventListener('mouseleave', () => {
+          tooltip.style.display = 'none';
+        });
+
+        // Update tooltip position when map is panned
+        map.addListener('bounds_changed', () => {
+          if (tooltip.style.display === 'block') {
+            const rect = pinBackground.getBoundingClientRect();
+            tooltip.style.left = rect.left + rect.width/2 + 'px';
+            tooltip.style.top = rect.top + 'px';
+          }
+        });
+
         const infoContent = document.createElement('div');
         infoContent.classList.add('info-window');
+
+        let pollutionDetails = '';
+        if (spot.level === 'high') {
+          pollutionDetails = `
+            <p>Water quality is severely compromised with:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>Below 4 mg/L</strong> (Critical)</li>
+              <li>BOD levels: <strong>Above 8 mg/L</strong> (Unsafe)</li>
+              <li>Coliform count: <strong>Very high</strong></li>
+              <li>Heavy metals: <strong>Present</strong></li>
+            </ul>
+            <p>Immediate remediation required.</p>
+          `;
+        } else if (spot.level === 'medium') {
+          pollutionDetails = `
+            <p>Water quality is concerning with:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>4-5 mg/L</strong> (Concerning)</li>
+              <li>BOD levels: <strong>5-8 mg/L</strong> (Elevated)</li>
+              <li>Coliform count: <strong>Moderate</strong></li>
+              <li>Heavy metals: <strong>Trace amounts</strong></li>
+            </ul>
+            <p>Regular monitoring recommended.</p>
+          `;
+        } else {
+          pollutionDetails = `
+            <p>Water quality is acceptable with:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>Above 5 mg/L</strong> (Acceptable)</li>
+              <li>BOD levels: <strong>Below 5 mg/L</strong> (Normal)</li>
+              <li>Coliform count: <strong>Low</strong></li>
+              <li>Heavy metals: <strong>Not detected</strong></li>
+            </ul>
+            <p>Continued monitoring advised.</p>
+          `;
+        }
+
         infoContent.innerHTML = `
           <h3>${spot.name}</h3>
           <p><strong>Pollution Level:</strong> <span class="pollution-${spot.level}">${spot.level.toUpperCase()}</span></p>
           <p>${spot.description}</p>
+          ${pollutionDetails}
         `;
 
         // Add click listener for advanced marker - using gmp-click for AdvancedMarkerElement
@@ -599,16 +952,52 @@ function initMap() {
           animation: google.maps.Animation.DROP
         });
 
-        // Create info window for regular marker
+        let pollutionDetails = '';
+        if (spot.level === 'high') {
+          pollutionDetails = `
+            <p>Water quality is severely compromised with:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>Below 4 mg/L</strong> (Critical)</li>
+              <li>BOD levels: <strong>Above 8 mg/L</strong> (Unsafe)</li>
+              <li>Coliform count: <strong>Very high</strong></li>
+              <li>Heavy metals: <strong>Present</strong></li>
+            </ul>
+            <p>Immediate remediation required.</p>
+          `;
+        } else if (spot.level === 'medium') {
+          pollutionDetails = `
+            <p>Water quality is concerning with:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>4-5 mg/L</strong> (Concerning)</li>
+              <li>BOD levels: <strong>5-8 mg/L</strong> (Elevated)</li>
+              <li>Coliform count: <strong>Moderate</strong></li>
+              <li>Heavy metals: <strong>Trace amounts</strong></li>
+            </ul>
+            <p>Regular monitoring recommended.</p>
+          `;
+        } else {
+          pollutionDetails = `
+            <p>Water quality is acceptable with:</p>
+            <ul class="pollution-details">
+              <li>Dissolved oxygen: <strong>Above 5 mg/L</strong> (Acceptable)</li>
+              <li>BOD levels: <strong>Below 5 mg/L</strong> (Normal)</li>
+              <li>Coliform count: <strong>Low</strong></li>
+              <li>Heavy metals: <strong>Not detected</strong></li>
+            </ul>
+            <p>Continued monitoring advised.</p>
+          `;
+        }
+
         const infoWindow = new google.maps.InfoWindow({
           content: `
             <div class="info-window">
               <h3>${spot.name}</h3>
               <p><strong>Pollution Level:</strong> <span class="pollution-${spot.level}">${spot.level.toUpperCase()}</span></p>
               <p>${spot.description}</p>
+              ${pollutionDetails}
             </div>
           `,
-          maxWidth: 300
+          maxWidth: 350
         });
 
         // Add click listener to open info window
@@ -634,16 +1023,52 @@ function initMap() {
         }
       });
 
-      // Create info window
+      let pollutionDetails = '';
+      if (spot.level === 'high') {
+        pollutionDetails = `
+          <p>Water quality is severely compromised with:</p>
+          <ul class="pollution-details">
+            <li>Dissolved oxygen: <strong>Below 4 mg/L</strong> (Critical)</li>
+            <li>BOD levels: <strong>Above 8 mg/L</strong> (Unsafe)</li>
+            <li>Coliform count: <strong>Very high</strong></li>
+            <li>Heavy metals: <strong>Present</strong></li>
+          </ul>
+          <p>Immediate remediation required.</p>
+        `;
+      } else if (spot.level === 'medium') {
+        pollutionDetails = `
+          <p>Water quality is concerning with:</p>
+          <ul class="pollution-details">
+            <li>Dissolved oxygen: <strong>4-5 mg/L</strong> (Concerning)</li>
+            <li>BOD levels: <strong>5-8 mg/L</strong> (Elevated)</li>
+            <li>Coliform count: <strong>Moderate</strong></li>
+            <li>Heavy metals: <strong>Trace amounts</strong></li>
+          </ul>
+          <p>Regular monitoring recommended.</p>
+        `;
+      } else {
+        pollutionDetails = `
+          <p>Water quality is acceptable with:</p>
+          <ul class="pollution-details">
+            <li>Dissolved oxygen: <strong>Above 5 mg/L</strong> (Acceptable)</li>
+            <li>BOD levels: <strong>Below 5 mg/L</strong> (Normal)</li>
+            <li>Coliform count: <strong>Low</strong></li>
+            <li>Heavy metals: <strong>Not detected</strong></li>
+          </ul>
+          <p>Continued monitoring advised.</p>
+        `;
+      }
+
       const infoWindow = new google.maps.InfoWindow({
         content: `
           <div class="info-window">
             <h3>${spot.name}</h3>
             <p><strong>Pollution Level:</strong> <span class="pollution-${spot.level}">${spot.level.toUpperCase()}</span></p>
             <p>${spot.description}</p>
+            ${pollutionDetails}
           </div>
         `,
-        maxWidth: 300
+        maxWidth: 350
       });
 
       // Add click listener
@@ -657,36 +1082,73 @@ function initMap() {
   const style = document.createElement('style');
   style.textContent = `
     .info-window {
-      padding: 10px;
+      padding: 15px;
       font-family: 'Poppins', sans-serif;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
     .info-window h3 {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
       color: #0d47a1;
-      font-size: 16px;
-      border-bottom: 1px solid #e0e0e0;
-      padding-bottom: 5px;
+      font-size: 18px;
+      border-bottom: 2px solid #2196f3;
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+    .info-window p {
+      margin: 8px 0;
+      line-height: 1.5;
+      color: #424242;
+    }
+    .info-window strong {
+      font-weight: 600;
+      color: #212121;
     }
     .pollution-high {
       color: #f44336;
       font-weight: bold;
+      background-color: rgba(244, 67, 54, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
     }
     .pollution-medium {
       color: #ff9800;
       font-weight: bold;
+      background-color: rgba(255, 152, 0, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
     }
     .pollution-low {
       color: #4caf50;
       font-weight: bold;
+      background-color: rgba(76, 175, 80, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .pollution-details {
+      margin: 8px 0 12px 0;
+      padding-left: 20px;
+    }
+    .pollution-details li {
+      margin-bottom: 6px;
+      font-size: 13px;
     }
   `;
   document.head.appendChild(style);
 
   // Hide loading indicator when map is fully loaded
   google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+    // Clear the timeout to prevent showing fallback
+    if (window.mapLoadingTimeout) {
+      clearTimeout(window.mapLoadingTimeout);
+    }
+
+    // Hide loading indicator
     if (mapLoading) {
       mapLoading.classList.add('hidden');
     }
+
+    console.log('Map loaded successfully with API key: AIzaSyAPREHAXknXIDLKG6hHhpty99gxlOlkpRw');
   });
 }
 

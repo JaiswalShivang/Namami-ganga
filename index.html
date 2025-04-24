@@ -35,7 +35,7 @@
       window.mapLoadingTimeout = mapTimeout;
 
       const script = document.createElement('script');
-      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDLQEIfvCNg9Pj9ZGBWSTGzYnKa_v-QfGM&libraries=places,marker&callback=initMap&loading=async&v=beta';
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAPREHAXknXIDLKG6hHhpty99gxlOlkpRw&libraries=places,marker&callback=initMap&loading=async&v=beta';
       script.async = true;
       script.defer = true;
 
@@ -50,6 +50,7 @@
 
       document.head.appendChild(script);
     }
+
 
     window.addEventListener('load', loadGoogleMaps);
   </script>
@@ -180,7 +181,7 @@
               <i class="fas fa-map-marked-alt fa-3x"></i>
               <h3>Interactive Map Unavailable</h3>
               <p>The interactive pollution map could not be loaded. Please check your internet connection or try again later.</p>
-              <button class="btn btn-sm" onclick="window.location.reload()">Try Again</button>
+              <button class="btn btn-sm" onclick="window.location.reload()"><i class="fas fa-sync-alt"></i> Try Again</button>
             </div>
           </div>
         </div>
@@ -391,26 +392,28 @@
         </div>
 
         <div class="contact-form" data-aos="fade-left">
-          <form id="contactForm">
+          <form id="contactForm" action="https://getform.io/f/axowxmxb" method="POST">
             <div class="form-group">
               <label for="name">Your Name</label>
-              <input type="text" id="name" class="form-control" placeholder="Enter your name">
+              <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
             </div>
 
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" id="email" class="form-control" placeholder="Enter your email">
+              <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
             </div>
 
             <div class="form-group">
               <label for="subject">Subject</label>
-              <input type="text" id="subject" class="form-control" placeholder="Enter subject">
+              <input type="text" id="subject" name="subject" class="form-control" placeholder="Enter subject" required>
             </div>
 
             <div class="form-group">
               <label for="message">Message</label>
-              <textarea id="message" class="form-control" placeholder="Enter your message"></textarea>
+              <textarea id="message" name="message" class="form-control" placeholder="Enter your message" required></textarea>
             </div>
+
+            <input type="hidden" name="_gotcha" style="display:none !important">
 
             <button type="submit" class="btn">Send Message</button>
           </form>
